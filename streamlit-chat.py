@@ -15,8 +15,8 @@ def create_copilot():
     kstore = KnowledgeStore(path=chroma_db)
     openai_api_key = st.secrets["OPENAI_API_KEY"]
     
-    llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0.0, openai_api_key=openai_api_key)    
-    #llm = HuggingFaceEndpoint(repo_id='mistralai/Mistral-7B-Instruct-v0.2', temperature=0.01, token=st.secrets['HUGGINGFACEHUB_API_TOKEN'])
+    #llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0.0, openai_api_key=openai_api_key)    
+    llm = HuggingFaceEndpoint(repo_id='mistralai/Mistral-7B-Instruct-v0.2', temperature=0.01, token=st.secrets['HUGGINGFACEHUB_API_TOKEN'])
     
     copilotqa = PatternsQACopilot(store=kstore, llm=llm)
     
