@@ -844,7 +844,7 @@ class ADRWriterCopilot(BaseCopilot):
         else:
             retriever = self.dk_store.get_retriever(collection=collection, threshold=threshold)
             retriever = MultiQueryRetriever.from_llm(retriever=retriever, llm=self.llm)
-            analysis = PatternAssessmentCopilot.ADR_PROMPT_TEMPLATE_ZEROSHOT
+            analysis = ADRWriterCopilot.ADR_PROMPT_TEMPLATE_ZEROSHOT
 
         self.adr_prompt = ChatPromptTemplate.from_messages([
             ("system", ADRWriterCopilot.SYSTEM_PROMPT_TEMPLATE), # system role
