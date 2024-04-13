@@ -6,6 +6,47 @@ from assistants import PatternsQACopilot, PatternSuggestionCopilot, PatternAsses
 from stores import KnowledgeStore, DesignStore
 
 
+tt = st.markdown("""
+<style>
+
+    .stTabs [aria-selected="true"] {
+  		color: #6C60FE;
+	}  
+
+    .stTabs [data-baseweb="tab-highlight"] {
+        background-color: #6C60FE;
+        
+    }
+        
+    .stTabs:focus {
+        color: #6C60FE;
+    }
+    
+    .stTabs [aria-selected="false"]:hover {
+        color: #6C60FE;
+    }
+     
+</style>""", unsafe_allow_html=True)
+
+
+bb = st.markdown(
+            """
+            <style>
+                button[data-testid="baseButton-primary"]{  
+                    background-color: #6C60FE;
+                    border-color: #6C60FE;
+                    secondaryBackground-color: #BCC2F2;
+               }
+               button[data-testid="baseButton-primary"]:hover {
+                    background-color: #BCC2F2;
+                    color:#6C60FE;      
+               }
+                
+            </style>""",
+            unsafe_allow_html=True,
+        )
+
+
 # -----------------------------------------------------------------------------
 
 @st.cache_resource()
@@ -31,13 +72,15 @@ def create_copilot():
     
     return copilotqa, copilotpat, copilotcriticize, copilotadr, copilotconsistency
 
-def reset_conversation(key,copilot):
+
+def reset_conversation(key,copilot=None):
     st.session_state[key] = []
-    copilot.clear_chat_history()
+    if copilot is not None:
+        copilot.clear_chat_history()
     return 
    
    
-copilotqa, copilotpat, copilotcriticize, copilotadr, copilotconsistency = create_copilot()
+                                                                                          
 
 
 def update_context(key): 
@@ -88,10 +131,15 @@ def click_save_button(button, which):
         else:
             st.session_state.bno_adr_ass = True
     return 
-    
+        
 
 # ------------------------------------------------------------------------
 # ------------------------------------------------------------------------
+
+copilotqa, copilotpat, copilotcriticize, copilotadr, copilotconsistency = create_copilot()
+
+if 'qabot' not in st.session_state:
+    st.session_state.qabot = []
 
 if 'messages_pat' not in st.session_state:
     st.session_state.messages_pat = []
@@ -130,7 +178,7 @@ with col1:
 with col2:
     st.write('')
     st.write('')
-    st.title('ArchMentor')
+    st.title('ArchMind')
 
 # ---------------------------------------------------------------
 
@@ -288,7 +336,7 @@ with consistency:
                             st.write(mm)
                             st.session_state.messages_consistency.append({"role": "assistant", "content": mm})
                             
-
+    st.button("Reset conversation", key='reset_consistency', type="primary", use_container_width=True, on_click=reset_conversation, args=('messages_consistency',)) 
 
 # ---------------------------------------------------------
 
@@ -514,7 +562,8 @@ with adr_generator:
                             with bno_adr:
                                 st.button('No', on_click=click_save_button, args=('adr','no',))
 
-
+    st.button("Reset conversation", key='reset_adr', type="primary", use_container_width=True, on_click=reset_conversation, args=('messages_adr',)) 
+    
 # --------------------------------------------------------------------------------------            
             
 with criticizer:
@@ -677,7 +726,8 @@ with criticizer:
                             with bno_critic:
                                 st.button('No', on_click=click_save_button, args=('critic','no',))
                     
-                       
+                    
+    st.button("Reset conversation", key='reset_critic', type="primary", use_container_width=True, on_click=reset_conversation, args=('messages_critic',))                     
 # ------------------------------------------------------------------------
 
 with pattern_suggestion:
@@ -848,6 +898,9 @@ with pattern_suggestion:
                         st.write(response)
                         st.session_state.messages_pat.append({"role": "assistant", "content": response})
 
+
+    st.button("Reset conversation", key='reset_pattern', type="primary", use_container_width=True, on_click=reset_conversation, args=('messages_pat',))   
+
 # -----------------------------------------------------------------------------
 
 
@@ -855,8 +908,8 @@ with qa_bot:
                
     copilotqa.configure_retriever(option if option != 'none' else None) 
         
-    if 'qabot' not in st.session_state:
-        st.session_state.qabot = []
+                                       
+                                   
 
     sc = st.container(height=400)
 
@@ -877,5 +930,7 @@ with qa_bot:
                 st.write(response)
         st.session_state.qabot.append({"role": "assistant", "content": response})
     
-    st.button("Reset conversation", type="primary", use_container_width=True, on_click=reset_conversation, args=('qabot',copilotqa)) 
     
+
+    
+    st.button("Reset conversation", key='reset_qa', type="primary", use_container_width=True, on_click=reset_conversation, args=('qabot',copilotqa)) 
