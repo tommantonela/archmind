@@ -1,6 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import os
 from dotenv import load_dotenv, find_dotenv
@@ -50,5 +47,5 @@ def create_database(folder=None):
 # --- Main program
 
 print()
-kstore = create_database()
+kstore = create_database(folder="./patterns_semantic_chromadb")
 print()

@@ -1,0 +1,70 @@
+{
+    "system_name": "DAS-P1-2023",
+    "functional_requirements": [
+        {
+            "id": "RF1",
+            "description": "The intention is to migrate from a monolithic architecture to microservices. In that migration, a Gateway component has to be implmented to manage HTTP/REST requests. Besides, the application should work for both PC and mobile devices.",
+            "patterns": ["Gateway Pattern", "Backend-for-Frontend Pattern", "Microservices"]
+        },
+        {
+            "id": "RF2",
+            "description": "The system must provide a module that manages personal data from clients. Personal information includes: name, address and customer orders. There must be a function to modify the personal data and another function for the history of orders.",
+            "patterns": ["Microservices", "RESTful API", "Database per Service", "Command Query Responsibility Segregation (CQRS)", "Event Sourcing"]
+        },
+        {
+            "id": "RF2.1",
+            "description": "The system must allow access to the client data.",
+            "patterns": ["Microservices", "HTTP/REST", "API Gateway", "Database per Service"]
+        },
+        {
+            "id": "RF3",
+            "description": "The system must provide a module that manages customer orders. The order data includes: order ID, customer who placed the, status and total amount. There must be a function to make those requests.",
+            "patterns": ["Microservices", "RESTful API", "Service-oriented architecture"]
+        },
+        {
+            "id": "RF3.1",
+            "description": "The system must allow access to details of the customer orders.",
+            "patterns": ["Microservices Architecture", "HTTP/REST API", "Service Mesh"]
+        },
+        {
+            "id": "RF3.2",
+            "description": "It must be possible to create orders, modify them, update their data, and process orders.",
+            "patterns": ["Command Pattern", "Repository Pattern", "Event-Driven Architecture"]
+        },
+        {
+            "id": "RF3.3",
+            "description": "Clients must have a maximum number of attempts to place an order in the system.",
+            "patterns":  ["Retry Pattern", "Circuit Breaker Pattern"]
+        },
+        {
+            "id": "RF4",
+            "description": "The system must provide a module to optimize the functions for delivery and order routing depending on the expected delay. Two optimization algorithms to assign the best route should be implemented.",
+            "patterns": ["Strategy Pattern", "Factory Method Pattern"]
+        },
+        {
+            "id": "RF5",
+            "description": "The system must include a module to provide statistics on orders, trucks and customers.",
+            "patterns": ["Microservices", "HTTP/REST API", "Module", "Event-Driven Architecture"]
+        },
+        {
+            "id": "RF6",
+            "description": "The system must provide a module to collect and report incidents.",
+            "patterns": ["Event Sourcing", "Command Query Responsibility Segregation (CQRS)"]
+        },
+        {
+            "id": "RF7",
+            "description": "The system must provide a module to manage customer payments.",
+            "patterns": ["Microservices", "HTTP/REST API", "Service-oriented architecture (SOA)"]
+        },
+        {
+            "id": "RF7.1",
+            "description": "Payments should be made with an external, third-party component, which communicates with the system through a dedicated API.",
+            "patterns": ["API Gateway", "Service Mesh"]
+        },
+        {
+            "id": "RF8",
+            "description": "The system must implement a Gateway component to manage HTTP/REST requests.",
+            "patterns": ["API Gateway Pattern", "Edge Functions Pattern", "Protocol Translation Pattern"]
+        }
+    ]
+}

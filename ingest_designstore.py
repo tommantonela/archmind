@@ -1,7 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 
@@ -18,15 +14,15 @@ from stores import DesignStore
 # warnings.filterwarnings('ignore')
 
 # Configuring OpenAI (GPT)
-# print()
-# ENV_PATH = sys.path[0]+'/andres.env'
-# print("Reading OPENAI config:", ENV_PATH, load_dotenv(dotenv_path=Path(ENV_PATH)))
-# os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
-# os.environ["TOKENIZERS_PARALLELISM"] = "false"
+print()
+ENV_PATH = sys.path[0]+'/andres.env'
+print("Reading OPENAI config:", ENV_PATH, load_dotenv(dotenv_path=Path(ENV_PATH)))
+os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 SYSTEM_DESCRIPTION = './data/system_description.txt'
-FUNCTIONAL_REQUIREMENTS = './data/requirements.json'
-DESIGN_DECISIONS = './data/decisions.json'
+FUNCTIONAL_REQUIREMENTS = './data/requirements-rag.json'
+DESIGN_DECISIONS = './data/decisions-rag.json'
 
 def create_database(folder=None):
     # Load the system description

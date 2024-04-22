@@ -1,7 +1,3 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 from typing import List
 import chromadb
 from chromadb.utils import embedding_functions
@@ -79,6 +75,7 @@ class DesignStore:
                 # Store the patterns for each requirement
                 all_patterns = [r['patterns'] for r in requirements]
                 all_metadatas = DesignStore._convert_list_to_metadata(all_patterns, prefix="pattern")
+                # print(all_metadatas)
                 self.requirements_collection.add(ids=all_ids, documents=all_docs, metadatas=all_metadatas)
 
         else:
@@ -95,7 +92,10 @@ class DesignStore:
             dp_list = list(set(dp_list))
             for i, x in enumerate(dp_list):
                     md[prefix+"_"+str(i+1)] = x
-            all_metadatas.append(md)
+            if len(md) > 0:
+                all_metadatas.append(md)
+            else:
+                all_metadatas.append(None)
         return all_metadatas
 
     def get_system(self, sys_id=None, summary=False):
@@ -113,7 +113,9 @@ class DesignStore:
     
     def get_patterns_for_requirement(self, id:str):
         result = self.requirements_collection.get(ids=[id])
-        patterns = [p for k,p in result['metadatas'][0].items() if "pattern" in k]
+        patterns = []
+        if result['metadatas'][0] is not None:
+            patterns = [p for k,p in result['metadatas'][0].items() if "pattern" in k]
         return patterns
     
     def get_requirements(self):

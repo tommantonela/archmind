@@ -1,0 +1,9 @@
+A food company intends to migrate the architecture from a monolithic system to one based on microservices in a way. The existing architecture has a part of PC and mobile clients that access the company's data hosted in 2 SQL databases (Customers, Orders). The Customer Database contains customer and payment data, while the Order Database is responsible for storing the remaining data. The current access is intended to be replaced by HTTP/REST protocols by means of an appropriate Gateway component. 
+The company's business logic has the following modules: 
+•  Customers (Critical): This component allows you to access customers' personal data. 
+•  Orders (non-critical): This module allows customers to place orders for products from the company. If a customer attempts to place an order, they are allowed a number of attempts to determine. 
+•  Delivery & Routing (Critical): This complex component has a lot of functionality that needs to be decoupled and manages the delivery of transport fleets to customers and truck routes. The management has 2 optimization algorithms that are selected based on the truck's delay. 
+•  Statistics (non-critical): The system has a statistics module that provides valuable information on the status of orders and the real-time status of trucks. Statistics also provide customer information. 
+•  Incidents (semi-critical): This module reports to route managers any type of incident (broken down truck, delivery not made, etc.) 
+•  Payments (critical): This component is an external payment gateway provided by another company to ensure the security of payments. 
+The new architecture must have the right software elements to run the microservices. On the other hand, in the architecture there is a component called OrderManager that acts as an intermediary between customers, orders, delivery and incidents, communicating these functionalities. 
