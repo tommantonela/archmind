@@ -80,9 +80,6 @@ def reset_conversation(key,copilot=None):
     return 
    
    
-                                                                                          
-
-
 def update_context(key): 
     copilotpat.set_system_summary(st.session_state[key])
     copilotcriticize.set_system_summary(st.session_state[key])
@@ -132,7 +129,6 @@ def click_save_button(button, which):
             st.session_state.bno_adr_ass = True
     return 
         
-
 # ------------------------------------------------------------------------
 # ------------------------------------------------------------------------
 
@@ -182,9 +178,12 @@ with col2:
 
 # ---------------------------------------------------------------
 
+mapping = {'All': 'all', 'Architectural Styles': 'architectural_styles', 
+           'Design Patterns':'design_patterns','Microservice Patterns':'microservice_patterns','Zero-shot':None}
+
 option = st.selectbox(
     "Which knowledge source do you want to use?",
-           ('all',"architectural_styles", "design_patterns", "microservice_patterns",'none'),
+           ('All',"Architectural Styles", "Design Patterns", "Microservice Patterns",'Zero-shot'),
            index=0,
            placeholder="",
            )
@@ -195,7 +194,7 @@ qa_bot, pattern_suggestion, criticizer, adr_generator, consistency = st.tabs(["Q
 
 with consistency:
     
-    copilotconsistency.configure_retriever(option if option != 'none' else None) # TODO: este es siempre?
+    copilotconsistency.configure_retriever(mapping[option]) 
     
     system_summary = st.text_area(label='System context:',
                                   key='context_consistency',
@@ -342,7 +341,7 @@ with consistency:
 
 with adr_generator:
     
-    copilotadr.configure_retriever(option if option != 'none' else None) # TODO: este es siempre?
+    copilotadr.configure_retriever(mapping[option]) 
     
     system_summary = st.text_area(label='System context:',
                                   key='context_adr',
@@ -568,7 +567,7 @@ with adr_generator:
             
 with criticizer:
 
-    copilotcriticize.configure_retriever(option if option != 'none' else None) # TODO: este es siempre?
+    copilotcriticize.configure_retriever(mapping[option]) 
     
     system_summary = st.text_area(label='System context:',
                                   key='context_critic',
@@ -586,7 +585,7 @@ with criticizer:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    if ('byes_critic' in st.session_state and st.session_state.byes_critic) or ('bno_critic' in st.session_state and st.session_state.byes_critic):
+    if ('byes_critic' in st.session_state and st.session_state.byes_critic) or ('bno_critic' in st.session_state and st.session_state.bno_critic):
         with sc:
            with st.chat_message("assistant"):
                if 'byes_critic' in st.session_state and st.session_state.byes_critic:
@@ -732,7 +731,7 @@ with criticizer:
 
 with pattern_suggestion:
     
-    copilotpat.configure_retriever(option if option != 'none' else None) # TODO: este es siempre?
+    copilotpat.configure_retriever(mapping[option])
     
     system_summary = st.text_area(label='System context:',
                                   key= 'context_pattern',
@@ -797,7 +796,7 @@ with pattern_suggestion:
             
             st.session_state.pat_requirement = (prompt,pr)
             
-            st.session_state.messages_pat.clear() # TODO: Para cada requerimiento, borro o anterior?
+            st.session_state.messages_pat.clear() 
             
             st.session_state.messages_pat.append({"role": "user", "content": pr}) 
             with sc:
@@ -882,7 +881,7 @@ with pattern_suggestion:
                                 
                             st.write(f'*{decision}*')
                             st.session_state.messages_pat.append({"role": "assistant", "content": f'*{decision}*'})
-                            st.session_state.last_decision = decision # TODO: ESTA MAL EL RECONOCIMIENTO DE DECISIONES!
+                            st.session_state.last_decision = decision # TODO: FIX DECISION IDENTIFICATION
                             
                             st.write('Do you want me to save the decision for the requirement?')
                             st.session_state.messages_pat.append({"role": "assistant", "content": 'Do you want me to save the decision for the requirement?'})
@@ -906,11 +905,8 @@ with pattern_suggestion:
 
 with qa_bot:
                
-    copilotqa.configure_retriever(option if option != 'none' else None) 
+    copilotqa.configure_retriever(mapping[option]) 
         
-                                       
-                                   
-
     sc = st.container(height=400)
 
     with sc:
