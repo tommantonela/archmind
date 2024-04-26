@@ -1,3 +1,7 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 from langchain_core.prompts import PromptTemplate
 from langchain.output_parsers.json import SimpleJsonOutputParser
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
