@@ -1,0 +1,101 @@
+{
+    "system_name": "DAS-P1-2023",
+    "design_decisions": [
+        {
+            "id": "DD1",
+            "description": "The Microservices Pattern is the best choice for this scenario as it aligns with the goal of transitioning to a microservices architecture. By breaking down the monolithic system into smaller, independent services, the company can achieve scalability, flexibility, and independent deployment. The Gateway Pattern can be implemented alongside the Microservices Pattern to manage HTTP/REST requests, providing a centralized entry point for clients accessing the microservices. This setup caters to the requirement of working for both PC and mobile clients.",
+            "pattern": "Microservices Pattern",
+            "requirements": "RF1"
+        },
+        {
+            "id": "DD2",
+            "description": "The best pattern for these requirements is the Retry Pattern as it directly addresses the need for retrying failed requests for placing orders within a maximum number of attempts. By implementing the Retry Pattern, the system can ensure that clients have a limited number of attempts to place an order, thus improving the overall reliability of the order management module.",
+            "pattern": "Retry Pattern",
+            "requirements": ["RF3", "RF3.3"]
+        },
+        {
+            "id": "DD3",
+            "description": "The Strategy Pattern is the best choice for optimizing delivery and order routing with different algorithms. By encapsulating the optimization algorithms as strategies, the system can easily switch between the two optimization algorithms at runtime, promoting flexibility and code reuse. This pattern allows for the independent variation of algorithms, making it suitable for implementing multiple routing strategies based on delay.",
+            "pattern": "Strategy Pattern",
+            "requirements": "RF4"
+        },
+        {
+            "id": "DD4",
+            "description": "The Strategy Pattern is the best choice for optimizing delivery and order routing with different algorithms. By encapsulating the algorithms for route assignment, the Strategy Pattern allows for easy swapping between the two optimization algorithms based on delay, promoting flexibility and maintainability in the system.",
+            "pattern": "Strategy Pattern",
+            "requirements": "RF4"
+        },
+        {
+            "id": "DD5",
+            "description": "The Microservices pattern is the best fit for the given requirements as it aligns with the company's plan to transition to a microservices architecture. By decomposing the system into smaller, independent services, each responsible for a specific domain (e.g., Customers, Orders), the system can effectively manage client personal data, order data, and order processing. The Microservices pattern allows for the creation of a dedicated service for managing client personal data, another for order data, and another for order processing, enabling the system to fulfill all the specified requirements efficiently.",
+            "pattern": "Microservices pattern",
+            "requirements": ["RF2", "RF3.1", "RF3.2"]
+        },
+        {
+            "id": "DD6",
+            "description": "The Gateway Pattern is the best choice for implementing a Gateway component to manage HTTP/REST requests in the new microservices architecture. It provides a centralized entry point for handling requests and responses, which aligns well with the requirement for managing HTTP/REST traffic. Additionally, it offers advantages such as centralized management, improved security, and easier monitoring, making it a suitable fit for the system's needs.",
+            "pattern": "Gateway Pattern",
+            "requirements": "RF8"
+        },
+        {
+            "id": "DD7",
+            "description": "The best pattern for these requirements is the HTTP/REST API pattern. This pattern aligns well with the transition to microservices architecture and the use of HTTP/REST protocols. It provides a stateless and uniform interface for communication, which is crucial for modules like statistics on orders, trucks, and customers, as well as incident reporting. The simplicity and scalability of this pattern make it suitable for the specified requirements.",
+            "pattern": "HTTP/REST API pattern",
+            "requirements": ["RF5", "RF6"]
+        },
+        {
+            "id": "DD8",
+            "description": "The Retry Pattern is the best choice for the requirement of clients having a maximum number of attempts to place an order. By utilizing the Retry Pattern, the system can ensure that clients are allowed a specified number of attempts to place an order, providing fault tolerance and resilience to transient failures in the process.",
+            "pattern": "Retry Pattern",
+            "requirements": "RF3.3"
+        },
+        {
+            "id": "DD9",
+            "description": "The Event Sourcing pattern is the best fit for the requirement to collect and report incidents as it provides a comprehensive audit log of changes, which is crucial for incident tracking and reporting. By capturing all changes as events, the system can easily track incidents, analyze their causes, and generate reports based on the event history.",
+            "pattern": "Event Sourcing pattern",
+            "requirements": "RF6"
+        },
+        {
+            "id": "DD10",
+            "description": "The Microservices pattern is the best fit for the requirements as it allows for the creation of a dedicated Incidents microservice that can handle the collection and reporting of incidents independently. This microservice can interact with other microservices like Customers, Orders, and Statistics to gather relevant data for reporting incidents. The loosely coupled nature of microservices enables the Incidents module to evolve independently without affecting other parts of the system.",
+            "pattern": "Microservices pattern",
+            "requirements": "RF6"
+        },
+        {
+            "id": "DD11",
+            "description": "The Microservices Architecture pattern is the best fit for the requirements as it allows for the creation of a dedicated Statistics service that can provide statistics on orders, trucks, and customers independently. Each microservice can focus on a specific domain, enabling efficient data retrieval and processing for statistics generation.",
+            "pattern": "Microservices Architecture",
+            "requirements": "RF5"
+        },
+        {
+            "id": "DD12",
+            "description": "The API Gateway Pattern is the best choice for the given requirement as it centralizes external service communication through a dedicated API gateway. This pattern enforces security, simplifies client access, and provides centralized logging and monitoring, which aligns well with the need for an external component to communicate with the system through a dedicated API.",
+            "pattern": "API Gateway Pattern",
+            "requirements": "RF7.1"
+        },
+        {
+            "id": "DD13",
+            "description": "The Microservices Pattern is the best choice for this scenario as it aligns with the goal of transitioning from a monolithic system to microservices architecture. By decomposing the application into smaller services, it allows for independent development and scalability. Additionally, the Gateway Pattern can be implemented alongside the Microservices Pattern to manage HTTP/REST requests, providing a centralized access point for clients accessing the microservices.",
+            "pattern": "Microservices Pattern",
+            "requirements": "RF1"
+        },
+        {
+            "id": "DD14",
+            "description": "The Microservices Architecture pattern is the best choice for the requirements as it allows for the creation of a dedicated Payments service within the microservices ecosystem. This service can handle all payment-related functionalities independently, ensuring modularity and scalability. Additionally, the OrderManager component can easily communicate with the Payments service as part of the overall microservices architecture.",
+            "pattern": "Microservices Architecture",
+            "requirements": "RF7"
+        },
+        {
+            "id": "DD15",
+            "description": "The Repository Pattern is the best choice for the given requirements as it provides a structured way to handle data access and manipulation, which aligns well with the need to create, modify, update, and process orders in the system. By separating data access logic, the Repository Pattern can ensure that these operations are efficiently managed and maintained within the microservices architecture.",
+            "pattern": "Repository Pattern",
+            "requirements": "RF3.2"
+        },
+        {
+            "id": "DD16",
+            "description": "The Microservices Pattern is the best fit for the given requirements as it aligns with the company's plan to transition to a microservices architecture. By decomposing the system into smaller, independent services, each handling specific functionalities like client data and order data, the Microservices Pattern allows for better scalability, flexibility, and maintenance of the system. The OrderManager component can be implemented as a microservice to facilitate communication between different functionalities while ensuring that access to client and order data is efficiently managed within the microservices architecture.",
+            "pattern": "Microservices Pattern",
+            "requirements": ["RF2.1", "RF3.1"]
+        }
+    ]
+}

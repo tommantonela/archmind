@@ -1,0 +1,293 @@
+[
+    {
+        "description": "Microservices pattern",
+        "ranking": [
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "A software architecture pattern where an application is structured as a collection of loosely coupled services, each running in its own process and communicating through lightweight mechanisms.",
+                "pros": "- Scalability: Allows independent scaling of services\n- Flexibility: Enables technology diversity within services\n- Resilience: Failure in one service does not affect the entire system",
+                "cons": "- Complexity: Managing multiple services can be complex\n- Communication Overhead: Inter-service communication can introduce latency"
+            }
+        ],
+        "requirement": "RF1",
+        "decision": "DD1"
+    },
+    {
+        "description": "The Microservices pattern is the best choice for the requirements as it allows for independent deployment of services, which is crucial for managing customer orders efficiently. The pattern also provides scalability and resilience to failures, which are important aspects for the order management module. Additionally, the flexibility in development aligns well with the need for a function to handle order requests and manage client attempts.",
+        "ranking": [
+            {
+                "pattern_name": "Service-oriented architecture pattern",
+                "description": "A design pattern in which application components provide services to other components via a communications protocol, typically over a network.",
+                "pros": "1. Promotes reusability of services.\n2. Easier to maintain and update individual services.\n3. Can support multiple communication protocols.",
+                "cons": "1. Tight coupling between services.\n2. Can lead to performance issues due to remote communication.\n3. Complex deployment and management."
+            },
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "An architectural style that structures an application as a collection of loosely coupled services, which are independently deployable and scalable.",
+                "pros": "1. Scalability and flexibility in development.\n2. Independent deployment of services.\n3. Resilience to failures in one service.",
+                "cons": "1. Increased complexity in managing distributed systems.\n2. Requires additional effort for inter-service communication.\n3. Challenges in data consistency across services."
+            }
+        ],
+        "requirement": "[RF3, RF3.3]",
+        "decision": "DD2"
+    },
+    {
+        "description": "The Factory Method Pattern is the best choice for the given requirements as it allows for creating objects without specifying the exact class of object that will be created. In this case, the optimization algorithms for delivery and order routing can be implemented as subclasses of the Factory Method, providing flexibility and extensibility to the system.",
+        "ranking": [
+            {
+                "pattern_name": "Factory Method Pattern",
+                "description": "Defines an interface for creating an object, but lets subclasses alter the type of objects that will be created.",
+                "pros": "Allows the client code to work with the objects without knowing their concrete classes. Supports the Open/Closed Principle by allowing new types of objects to be added without modifying existing code.",
+                "cons": "May lead to a large number of subclasses if many different types of objects need to be created."
+            }
+        ],
+        "requirement": "RF4",
+        "decision": "DD3"
+    },
+    {
+        "description": "The Factory Method Pattern is the best pattern for the given requirements as it allows subclasses to alter the type of objects that will be created, which is essential for implementing different optimization algorithms for delivery and order routing. By encapsulating object creation, it provides a flexible way to implement the two optimization algorithms required. The loose coupling promoted by this pattern aligns well with the transition to a microservices architecture and the need for modular optimization functions.",
+        "ranking": [
+            {
+                "pattern_name": "Factory Method Pattern",
+                "description": "Defines an interface for creating an object, but lets subclasses decide which class to instantiate. It promotes loose coupling by eliminating the need to bind application-specific classes into the code.",
+                "pros": "Promotes loose coupling, allows subclasses to alter the type of objects that will be created, encapsulates object creation, provides a hook for subclasses to provide an extended behavior",
+                "cons": "Can lead to an explosion of subclasses if many products are required, may introduce complexity by adding an additional layer of abstraction"
+            }
+        ],
+        "requirement": "RF4",
+        "decision": "DD4"
+    },
+    {
+        "description": "Command Query Responsibility Segregation (CQRS) pattern",
+        "ranking": [
+            {
+                "pattern_name": "Command Query Responsibility Segregation (CQRS) pattern",
+                "description": "Separates the command (write) and query (read) operations into different models to improve performance and scalability.",
+                "pros": "1. Improves performance by optimizing read and write operations separately. 2. Scalable as read and write models can be scaled independently.",
+                "cons": "1. Complexity in managing two separate models. 2. Eventual consistency may lead to data synchronization issues."
+            },
+            {
+                "pattern_name": "RESTful API pattern",
+                "description": "Uses HTTP/REST protocols to provide access to resources and perform CRUD operations.",
+                "pros": "1. Standardized communication using HTTP verbs. 2. Supports CRUD operations for data manipulation.",
+                "cons": "1. Limited functionality for complex operations. 2. Lack of built-in security features."
+            },
+            {
+                "pattern_name": "Database per Service pattern",
+                "description": "Each microservice has its dedicated database to ensure data isolation and autonomy.",
+                "pros": "1. Data isolation for each microservice. 2. Autonomy in managing database schemas and technologies.",
+                "cons": "1. Increased resource consumption due to multiple databases. 2. Data consistency challenges across services."
+            },
+            {
+                "pattern_name": "Event Sourcing pattern",
+                "description": "Stores the state of an application as a sequence of events to maintain full audit trails and reconstruct past states.",
+                "pros": "1. Full audit trail for data changes. 2. Ability to replay events for debugging and analysis.",
+                "cons": "1. Increased storage requirements for event logs. 2. Complexity in event versioning and replay mechanisms."
+            },
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "Architectural style where an application is composed of small, independent services that communicate over well-defined APIs.",
+                "pros": "1. Scalability by independently scaling services. 2. Flexibility in technology choices for each service.",
+                "cons": "1. Increased network communication overhead. 2. Complexity in managing distributed systems."
+            },
+            {
+                "pattern_name": "Microservices Architecture pattern",
+                "description": "Design approach that structures an application as a collection of loosely coupled microservices.",
+                "pros": "1. Decentralized architecture for better fault isolation. 2. Independent deployment and scaling of services.",
+                "cons": "1. Coordination overhead between microservices. 2. Challenges in ensuring data consistency across services."
+            },
+            {
+                "pattern_name": "Command Pattern",
+                "description": "Encapsulates a request as an object, allowing parameterization of clients with different requests, queuing, logging, and undoable operations.",
+                "pros": "1. Encapsulation of requests for flexibility. 2. Support for queuing and logging of commands.",
+                "cons": "1. Increased complexity in command management. 2. Potential overhead in command execution."
+            }
+        ],
+        "requirement": "[RF2, RF3.1, RF3.2]",
+        "decision": "DD5"
+    },
+    {
+        "description": "API Gateway Pattern",
+        "ranking": [
+            {
+                "pattern_name": "API Gateway Pattern",
+                "description": "Centralized entry point for managing HTTP/REST requests",
+                "pros": "1. Simplifies request routing and composition. 2. Provides protocol translation. 3. Enables rate limiting and security features.",
+                "cons": "1. Adds a single point of failure. 2. May introduce latency due to additional layer."
+            }
+        ],
+        "requirement": "RF8",
+        "decision": "DD6"
+    },
+    {
+        "description": "The Event Sourcing pattern is the best fit for the requirements as it ensures capturing all changes to the application state, which is crucial for providing statistics on orders, trucks, and customers. By emitting domain events for every state change, the system can easily collect and report incidents as well. The pattern's focus on data consistency and auditability aligns well with the need for accurate statistics and incident tracking.",
+        "ranking": [
+            {
+                "pattern_name": "Event Sourcing pattern",
+                "description": "Captures all changes to an application state as a sequence of events",
+                "pros": "Ensures data consistency and auditability, Enables rebuilding state at any point in time",
+                "cons": "Complexity in managing event streams, Increased storage requirements"
+            },
+            {
+                "pattern_name": "Command Query Responsibility Segregation (CQRS) pattern",
+                "description": "Separates read and write operations for data stores",
+                "pros": "Optimizes read and write operations independently, Scalable for high-performance reads",
+                "cons": "Introduces complexity with maintaining separate models, Requires synchronization mechanisms"
+            }
+        ],
+        "requirement": "[RF5, RF6]",
+        "decision": "DD7"
+    },
+    {
+        "description": "",
+        "ranking": "No comparison available",
+        "requirement": "RF3.3",
+        "decision": "DD8"
+    },
+    {
+        "description": "The Command Query Responsibility Segregation (CQRS) pattern is the best choice for the system's requirement to collect and report incidents. By separating the read and write operations, CQRS allows for efficient handling of incident data collection and reporting. The optimized read model can be used for reporting incidents, while the write model can handle the collection of incident data. This separation enhances performance and scalability, making CQRS well-suited for this specific module.",
+        "ranking": [
+            {
+                "pattern_name": "Command Query Responsibility Segregation (CQRS) pattern",
+                "description": "Separates the read and write operations for data, allowing for optimized read and write models",
+                "pros": "- Improves performance by optimizing read and write operations\n- Enables scalability by independently scaling read and write models\n- Supports complex queries efficiently",
+                "cons": "- Introduces complexity with maintaining separate read and write models\n- Requires additional effort for synchronization between read and write models"
+            },
+            {
+                "pattern_name": "Event Sourcing pattern",
+                "description": "Captures all changes to an application state as a sequence of events",
+                "pros": "- Provides a full history of changes to the system\n- Enables auditing and traceability of data changes\n- Supports rebuilding application state at any point in time",
+                "cons": "- Increases storage requirements due to storing all events\n- Adds complexity to the system with event handling and replaying events"
+            }
+        ],
+        "requirement": "RF6",
+        "decision": "DD9"
+    },
+    {
+        "description": "The Command Query Responsibility Segregation (CQRS) pattern is the best fit for the requirement of collecting and reporting incidents. By separating the read and write operations, CQRS allows for efficient handling of incident data collection and reporting. The write model can capture incident creation and updates, while the read model can provide optimized querying for reporting purposes. This pattern aligns well with the need for a module dedicated to incidents in the system.",
+        "ranking": [
+            {
+                "pattern_name": "Command Query Responsibility Segregation (CQRS) pattern",
+                "description": "Separates the read and write operations into different models to improve performance and scalability",
+                "pros": "Improves performance by optimizing read and write operations separately, scales well with microservices architecture",
+                "cons": "Introduces complexity with maintaining separate models for read and write operations"
+            },
+            {
+                "pattern_name": "Event Sourcing pattern",
+                "description": "Captures all changes to an application state as a sequence of events",
+                "pros": "Provides a full audit log of changes, enables rebuilding state at any point in time",
+                "cons": "Increases complexity due to managing event streams and replaying events"
+            }
+        ],
+        "requirement": "RF6",
+        "decision": "DD10"
+    },
+    {
+        "description": "Microservices pattern",
+        "ranking": [
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "Decomposes the system into smaller, independent services that communicate over well-defined APIs",
+                "pros": "Scalability, fault isolation, technology diversity, independent deployment",
+                "cons": "Complexity, increased network communication, data consistency challenges"
+            },
+            {
+                "pattern_name": "HTTP/REST API pattern",
+                "description": "Utilizes HTTP and REST principles for communication between components",
+                "pros": "Standardized communication, stateless interactions, wide adoption",
+                "cons": "Limited functionality, potential performance overhead"
+            }
+        ],
+        "requirement": "RF5",
+        "decision": "DD11"
+    },
+    {
+        "description": "API Gateway pattern",
+        "ranking": [
+            {
+                "pattern_name": "API Gateway pattern",
+                "description": "Centralized API management component responsible for request routing, API composition, and protocol translation",
+                "pros": "1. Provides a centralized entry point for external communication\n2. Enables routing requests to appropriate services\n3. Supports API composition for invoking multiple services\n4. Facilitates protocol translation between client-friendly and service-friendly protocols",
+                "cons": "1. Adds an additional layer of complexity to the system\n2. May introduce a single point of failure if not properly designed and implemented"
+            }
+        ],
+        "requirement": "RF7.1",
+        "decision": "DD12"
+    },
+    {
+        "description": "Microservices pattern",
+        "ranking": [
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "Decomposes the application into smaller, independent services that are easier to manage and scale.",
+                "pros": "- Scalability: Each service can be independently scaled.\n- Flexibility: Services can be developed and deployed independently.\n- Resilience: Failure in one service does not affect the entire system.",
+                "cons": "- Complexity: Managing a distributed system can be complex and require additional infrastructure.\n- Communication Overhead: Inter-service communication can introduce latency and complexity."
+            }
+        ],
+        "requirement": "RF1",
+        "decision": "DD13"
+    },
+    {
+        "description": "The Microservices pattern is the best choice for managing customer payments in the food company's system. By implementing microservices, the company can have a dedicated payment service that handles all payment-related functionalities independently. This separation allows for better scalability, resilience, and flexibility in managing customer payments.",
+        "ranking": [
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "Architectural style that structures a system as a set of services, each running in its own process and communicating through lightweight mechanisms.",
+                "pros": "1. Scalability: Allows independent scaling of services. 2. Resilience: Failure in one service does not affect others. 3. Flexibility: Easier to update and deploy individual services.",
+                "cons": "1. Complexity: Managing multiple services can be complex. 2. Communication Overhead: Inter-service communication can introduce latency and overhead."
+            },
+            {
+                "pattern_name": "Service-oriented architecture (SOA) pattern",
+                "description": "Architectural pattern that defines the use of services to support the requirements of software users.",
+                "pros": "1. Reusability: Services can be reused across different applications. 2. Interoperability: Services can communicate with each other regardless of the platform or technology used.",
+                "cons": "1. Centralization: Can lead to a single point of failure. 2. Performance: Services may have performance issues due to centralized communication."
+            }
+        ],
+        "requirement": "RF7",
+        "decision": "DD14"
+    },
+    {
+        "description": "Command Pattern",
+        "ranking": [
+            {
+                "pattern_name": "Command Pattern",
+                "description": "Encapsulates a request as an object, thereby allowing for parameterization of clients with queues, requests, and operations.",
+                "pros": "Provides a structured way to handle requests, supports undo operations, and decouples the sender and receiver of a request.",
+                "cons": "Can lead to a large number of command classes and may introduce overhead due to the need for additional classes."
+            }
+        ],
+        "requirement": "RF3.2",
+        "decision": "DD15"
+    },
+    {
+        "description": "The Microservices pattern is the best choice for this scenario as it aligns with the transition to a microservices architecture. It allows for independent services handling client data and customer orders efficiently.",
+        "ranking": [
+            {
+                "pattern_name": "API Gateway pattern",
+                "description": "Centralized entry point for all client requests, responsible for request routing, API composition, and protocol translation.",
+                "pros": "Enhances security, simplifies client access, enables protocol translation.",
+                "cons": "Single point of failure, potential performance bottleneck."
+            },
+            {
+                "pattern_name": "Microservices pattern",
+                "description": "Architectural style where the system is composed of small, independent services that communicate over well-defined APIs.",
+                "pros": "Scalability, flexibility, technology diversity.",
+                "cons": "Complexity in managing distributed systems, increased network communication."
+            },
+            {
+                "pattern_name": "HTTP/REST pattern",
+                "description": "Utilizes HTTP methods and REST principles for communication between components.",
+                "pros": "Stateless communication, cacheability, uniform interfaces.",
+                "cons": "Limited functionality, potential overuse of HTTP methods."
+            },
+            {
+                "pattern_name": "Microservices Architecture pattern",
+                "description": "Design approach where the system is structured as a collection of loosely coupled services.",
+                "pros": "Scalability, resilience, technology independence.",
+                "cons": "Increased complexity, operational overhead."
+            }
+        ],
+        "requirement": "[RF2.1, RF3.1]",
+        "decision": "DD16"
+    }
+]

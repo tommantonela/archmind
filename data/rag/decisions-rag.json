@@ -1,0 +1,101 @@
+{
+    "system_name": "DAS-P1-2023",
+    "design_decisions": [
+        {
+            "id": "DD1",
+            "description": "The best pattern for this scenario is the Microservices pattern. This pattern aligns perfectly with the requirement to migrate from a monolithic architecture to microservices. It allows breaking down the system into smaller, independent services that can be developed, deployed, and scaled individually. Additionally, the use of a Gateway component for managing HTTP/REST requests fits well within the microservices architecture. Moreover, microservices can be designed to be device-agnostic, making them suitable for both PC and mobile devices. By implementing the Microservices pattern, the food company can effectively transition to a more scalable and flexible architecture while meeting the specified requirements.",
+            "pattern": "Microservices pattern",
+            "requirements": "RF1"
+        },
+        {
+            "id": "DD2",
+            "description": "The Microservices pattern is the best choice for the requirements as it allows for independent deployment of services, which is crucial for managing customer orders efficiently. The pattern also provides scalability and resilience to failures, which are important aspects for the order management module. Additionally, the flexibility in development aligns well with the need for a function to handle order requests and manage client attempts.",
+            "pattern": "Microservices pattern",
+            "requirements": ["RF3", "RF3.3"]
+        },
+        {
+            "id": "DD3",
+            "description": "The Factory Method Pattern is the best choice for the given requirements as it allows for creating objects without specifying the exact class of object that will be created. In this case, the optimization algorithms for delivery and order routing can be implemented as subclasses of the Factory Method, providing flexibility and extensibility to the system.",
+            "pattern": "Factory Method Pattern",
+            "requirements": "RF4"
+        },
+        {
+            "id": "DD4",
+            "description": "The Factory Method Pattern is the best pattern for the given requirements as it allows subclasses to alter the type of objects that will be created, which is essential for implementing different optimization algorithms for delivery and order routing. By encapsulating object creation, it provides a flexible way to implement the two optimization algorithms required. The loose coupling promoted by this pattern aligns well with the transition to a microservices architecture and the need for modular optimization functions.",
+            "pattern": "Factory Method Pattern",
+            "requirements": "RF4"
+        },
+        {
+            "id": "DD5",
+            "description": "The CQRS pattern is the best fit for the given requirements as it specifically addresses the separation of command and query responsibilities. This separation aligns well with the need to manage personal data and customer orders separately. By having a command-side domain model for managing personal data and orders, and a query model for accessing order details, the system can efficiently handle the functionalities required, such as creating, modifying, updating, and processing orders.",
+            "pattern": "Command Query Responsibility Segregation (CQRS) pattern",
+            "requirements": ["RF2", "RF3.1", "RF3.2"]
+        },
+        {
+            "id": "DD6",
+            "description": "The API Gateway Pattern is the most suitable for the given requirement as it aligns perfectly with the need for a Gateway component to manage HTTP/REST requests. By implementing this pattern, the system can effectively handle request routing, API composition, and protocol translation through a centralized gateway component. This approach ensures a structured and efficient way to manage incoming requests and direct them to the appropriate microservices based on the routing map.",
+            "pattern": "API Gateway Pattern",
+            "requirements": "RF8"
+        },
+        {
+            "id": "DD7",
+            "description": "The Event Sourcing pattern is the best fit for the given requirements as it inherently supports tracking changes and providing a history of events, which can be utilized for generating statistics on orders, trucks, and customers. Additionally, the pattern allows for easy creation of incident reports based on the stored events. By implementing Event Sourcing, the system can fulfill the requirements effectively by leveraging the event history to derive statistics and report incidents.",
+            "pattern": "Event Sourcing pattern",
+            "requirements": ["RF5", "RF6"]
+        },
+        {
+            "id": "DD8",
+            "description": "",
+            "pattern": "",
+            "requirements": "RF3.3"
+        },
+        {
+            "id": "DD9",
+            "description": "The Command Query Responsibility Segregation (CQRS) pattern is the best choice for the system's requirement to collect and report incidents. By separating the read and write operations, CQRS allows for efficient handling of incident data collection and reporting. The optimized read model can be used for reporting incidents, while the write model can handle the collection of incident data. This separation enhances performance and scalability, making CQRS well-suited for this specific module.",
+            "pattern": "Command Query Responsibility Segregation (CQRS) pattern",
+            "requirements": "RF6"
+        },
+        {
+            "id": "DD10",
+            "description": "The Command Query Responsibility Segregation (CQRS) pattern is the best fit for the requirement of collecting and reporting incidents. By separating the read and write operations, CQRS allows for efficient handling of incident data collection and reporting. The write model can capture incident creation and updates, while the read model can provide optimized querying for reporting purposes. This pattern aligns well with the need for a module dedicated to incidents in the system.",
+            "pattern": "Command Query Responsibility Segregation (CQRS) pattern",
+            "requirements": "RF6"
+        },
+        {
+            "id": "DD11",
+            "description": "The requirements focus on a specific module for providing statistics on orders, trucks, and customers, which is more related to the design and implementation of that particular feature rather than the overall system architecture patterns like microservices or REST APIs. Therefore, it would be more appropriate to design this statistics module based on the specific functionalities it needs to provide, the data it needs to access, and the interactions it requires within the system. This module could potentially utilize RESTful APIs for data retrieval and presentation, but the comparison and ranking of the provided patterns are not directly applicable to these requirements.",
+            "pattern": "",
+            "requirements": "RF5"
+        },
+        {
+            "id": "DD12",
+            "description": "API Gateway pattern",
+            "pattern": "API Gateway pattern",
+            "requirements": "RF7.1"
+        },
+        {
+            "id": "DD13",
+            "description": "The Microservices pattern is well-suited for breaking down a monolithic system into smaller, independent services that can be developed, deployed, and scaled independently. By transitioning to a microservices architecture, the company can modularize its system, implement the Gateway component for handling HTTP/REST requests, and ensure that the services are accessible from both PC and mobile devices. This pattern aligns with the requirements and provides the flexibility and scalability needed for the company's new architecture.",
+            "pattern": "Microservices pattern",
+            "requirements": "RF1"
+        },
+        {
+            "id": "DD14",
+            "description": "The best pattern for managing payments in this scenario is the **HTTP/REST API pattern**. By implementing a dedicated REST API for payment management, the system can expose specific endpoints for handling payment-related operations. This approach aligns well with the requirement of providing a module to manage payments and allows for easy integration with PC and mobile clients. Additionally, the RESTful nature of the API facilitates communication and data exchange between different components of the system.",
+            "pattern": "Microservices pattern",
+            "requirements": "RF7"
+        },
+        {
+            "id": "DD15",
+            "description": "Given that only the Command Pattern is available for consideration, it can be applied to fulfill the requirement of creating orders, modifying them, updating their data, and processing orders. The Command Pattern encapsulates requests, allowing for the centralization of functionality related to orders. By using the Command Pattern, different commands can be created for creating, modifying, updating, and processing orders, providing a structured and flexible way to handle these operations.",
+            "pattern": "Command Pattern",
+            "requirements": "RF3.2"
+        },
+        {
+            "id": "DD16",
+            "description": "The API Gateway pattern is the best choice for this scenario as it can handle request routing for accessing both client and order data. By utilizing the API Gateway, the system can route requests to the appropriate services responsible for managing client and order data, ensuring efficient communication and data retrieval. Additionally, the API Gateway can aggregate data from multiple services, which aligns well with the requirement of allowing access to different types of data in the system.",
+            "pattern": "API Gateway pattern",
+            "requirements": ["RF2.1", "RF3.1"]
+        }        
+   ]
+}

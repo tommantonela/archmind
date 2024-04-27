@@ -1,0 +1,70 @@
+{
+    "system_name": "DAS-P1-2023",
+    "functional_requirements": [
+        {
+            "id": "RF1",
+            "description": "The intention is to migrate from a monolithic architecture to microservices. It must be taken into account that a Gateway component has to be implmented to manage HTTP/REST requests. Besides, the application should work for both PC and mobile.",
+            "patterns": ["Gateway Pattern", "Microservices Pattern", "Client-Server Pattern"]
+        },
+        {
+            "id": "RF2",
+            "description": "The system must provide a module that manages client personal data is needed. Personal information includes: name, address and customer orders. There must be a function to modify the personal data and another function for the history of orders.",
+            "patterns": ["Microservices", "RESTful API", "Gateway", "Database per Service", "Command Query Responsibility Segregation (CQRS)"]
+        },
+        {
+            "id": "RF2.1",
+            "description": "The system must allow access to the client data.",
+            "patterns": ["Gateway Pattern", "Microservices Pattern", "RESTful API Pattern"]
+        },
+        {
+            "id": "RF3",
+            "description": "The system must provide a module that manages the customer orders. The order data includes: order ID, customer who placed the, status and total amount. There must be a function to make those requests.",
+            "patterns":  ["Microservices Architecture", "RESTful Web Services", "Gateway Pattern", "Database per Service", "Service Discovery", "CQRS (Command Query Responsibility Segregation)"]
+        },
+        {
+            "id": "RF3.1",
+            "description": "The system must allow access to order data.",
+            "patterns": ["Microservices Architecture", "HTTP/REST API", "Gateway Pattern"]
+        },
+        {
+            "id": "RF3.2",
+            "description": "It must be possible to create orders, modify them, update their data, and process them.",
+            "patterns": ["Command Pattern", "Repository Pattern", "Event-Driven Architecture"]
+        },
+        {
+            "id": "RF3.3",
+            "description": "Clients must have a maximum number of attempts to place an order.",
+            "patterns":  ["Retry Pattern", "Circuit Breaker Pattern"]
+        },
+        {
+            "id": "RF4",
+            "description": "The system mut provide a module to optimize delivery and order routing depending on the delay. Two optimization algorithms that assign the best route should be implemented.",
+            "patterns":  ["Strategy Pattern", "Factory Method Pattern", "Chain of Responsibility Pattern"]
+        },
+        {
+            "id": "RF5",
+            "description": "The system must include a module to provide statistics on orders, trucks and customers.",
+            "patterns": ["Microservices Architecture", "HTTP/REST API", "Gateway Pattern", "Database per Service"]
+        },
+        {
+            "id": "RF6",
+            "description": "The system must provide a module to collect and report incidents.",
+            "patterns": ["Event Sourcing", "Command Query Responsibility Segregation (CQRS)", "Microservices", "Gateway", "RESTful API"]
+        },
+        {
+            "id": "RF7",
+            "description": "The system must provide a module to manage payments.",
+            "patterns":  ["Microservices Architecture", "Gateway Pattern", "Database per Service", "RESTful Web Services"]
+        },
+        {
+            "id": "RF7.1",
+            "description": "The payment must be made with an external component, which must communicate with the system through a dedicated API.",
+            "patterns": ["Gateway Pattern", "API Gateway Pattern", "Microservices Pattern", "External Service Integration Pattern"]
+        },
+        {
+            "id": "RF8",
+            "description": "The sysetm must implement a Gateway component to manage HTTP/REST requests.",
+            "patterns": ["Gateway Pattern"]
+        }
+    ]
+}
