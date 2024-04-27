@@ -17,13 +17,11 @@ from langchain_community.vectorstores import Chroma
 from langchain.retrievers import MergerRetriever
 
 from langchain_experimental.text_splitter import SemanticChunker
-# from langchain_openai.embeddings import OpenAIEmbeddings
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 
-import json
-import pprint
-import os
+from sentence_transformers import util
+
 from tqdm import tqdm
 
 
@@ -43,11 +41,6 @@ class DesignStore:
         self.persistent_client = chromadb.PersistentClient(path=path, settings=Settings(allow_reset=True))
         
         if create:
-            # existing_collections = self.persistent_client.list_collections()
-            # if len(existing_collections) > 0:
-            #     print("Deleting existing collections ...")
-            #     for c in existing_collections:
-            #         self.persistent_client.delete_collection(c.name)
             print("Deleting existing collections ...")
             self.persistent_client.reset()
             self.system_collection = self.persistent_client.get_or_create_collection("system", embedding_function=self.sentence_transformer_ef)
@@ -221,8 +214,16 @@ class DesignStore:
             if (target_decision != description) and (distance <= threshold) and (distance > 0.0):
                 decisions[d] = description
         return decisions
+
+    def find_decision(self, description:str, k:int=1, threshold=0.5):
+        decisions = dict()
+        decs = self.decisions_collection.query(query_texts=[description], n_results=k)
+        for d, distance, description in zip(decs['ids'][0], decs['distances'][0], decs['documents'][0]):
+            if distance <= threshold:
+                decisions[d] = description
+        return decisions
     
-    def search_decisions_for_requirement(self, requirement: str, k:int=3, semantic_search=False, threshold=0.5):
+    def search_decisions_for_requirement(self, requirement: str, k:int=3, semantic_search=False, threshold=0.5, forbidden_decision=None):
         decisions = dict()
         if not semantic_search: # requirement is considered as an id
             docs = self.get_decisions()
@@ -234,10 +235,17 @@ class DesignStore:
         else: # requirement is used for semantic search
             reqs = self.requirements_collection.query(query_texts=[requirement], n_results=k)
             # print(reqs)
+            emb = None
+            if forbidden_decision is not None:
+                emb = self.sentence_transformer_ef([forbidden_decision])[0]
             for r, distance in zip(reqs['ids'][0], reqs['distances'][0]):
                 if (distance <= threshold) and (distance > 0.0):
                     # print("Checking", r, distance)
                     decisions_for_r = self.search_decisions_for_requirement(r, k, semantic_search=False)
+                    if emb is not None:
+                        temp = list(decisions_for_r.keys())
+                        decisions_for_r = {k: v for k, v in decisions_for_r.items() if util.cos_sim(emb, self.sentence_transformer_ef([v])[0]) < 1}
+                        print("Filtering forbidden decisions ...", temp, len(decisions_for_r))
                     decisions.update(decisions_for_r)
             return decisions
     
@@ -298,10 +306,6 @@ class KnowledgeStore:
         for pdf_file_path in tqdm(pdf_files, "PDFs"):
             pdf_loader = PyPDFLoader(pdf_file_path)
             batch_docs.extend(pdf_loader.load())
-        
-        # text_splitter = RecursiveCharacterTextSplitter(chunk_size=KnowledgeStore.CHUNK_SIZE, chunk_overlap=KnowledgeStore.CHUNK_OVERLAP)
-        # pdf_chunks = text_splitter.split_documents(batch_docs)
-        # print(len(pdf_chunks), "chunks")
 
         # text_splitter = SemanticChunker(OpenAIEmbeddings())
         text_splitter = SemanticChunker(HuggingFaceEmbeddings())

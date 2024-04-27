@@ -32,7 +32,6 @@ from langchain_core.pydantic_v1 import BaseModel, Field #, validator
 import json
 import pprint
 import logging
-import ast
 
 class CustomHandler(BaseCallbackHandler):
     
@@ -119,13 +118,6 @@ class BaseCopilot:
             return dict(zip(ids, docs))
         else:
             return None
-    
-    # def get_requirement_db(self, query): 
-    #     result = self.sys_store.get_requirement(query)
-    #     print(result)
-    #     if len(result['documents']) != 0:
-    #         return result['documents'][0]
-    #     return None
 
     def fetch_requirement(self, query):
         result = self.sys_store.get_requirement(query)
@@ -293,7 +285,6 @@ class PatternsQACopilot(BaseCopilot):
             if query == "exit" or query == "quit" or query == "q":
                 print('Bye!')
                 print()
-                # sys.exit()
                 return
         
             ai_msg, retrieved_docs = self.run(query)
@@ -311,13 +302,6 @@ class PatternAnalysis(BaseModel):
     pros: Optional[str] = Field(description="list of advantages of using the pattern")
     cons: Optional[str] = Field(description="list of disadvantages of using the pattern")
 
-    # You can add custom validation logic easily with Pydantic.
-    # @validator("setup")
-    # def question_ends_with_question_mark(cls, field):
-    #     if field[-1] != "?":
-    #         raise ValueError("Badly formed question!")
-    #     return field
-
 class PatternRanking(BaseModel):
     ranking: List[PatternAnalysis]
     best_pattern: Optional[str] = Field(description="name of best ranked pattern for the requirements")
@@ -330,29 +314,6 @@ class PatternSuggestionCopilot(BaseCopilot):
     If you don't know the answer, then just say return an empty list, don't try to make up an answer.
     """
 
-    # SELECTION_PROMPT_TEMPLATE_RAG = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed. Additional information can be included.
-    # The question at the end is about a requirement that this software system must fulfill. 
-    # The requirement itself is enclosed by backticks. Remember to focus on the requirement.
-    # Answer with a plain list of patterns that might be applicable for the requirement. 
-    # For each pattern, assess if the pattern is related to the additional information provided. 
-    # If a pattern is not related to the additional information, do not include the pattern in the list.
-    # If the part with additional information is empty, just return an empty list.
-    # If the context is empty, just return an empty list.
-    # Return the patterns in JSON format. Only include the names of the patterns in the JSON structure, nothing else.
-    # Double-check if the requirement is clear and unambiguous for the provided context.
-    # Do not change or alter the original requirement in any way.
-    # If the requirement does not make sense for the context or is unclear or ambiguous, just return an empty list,
-    # do not try to provide irrelevant patterns.
-
-    # Context: {system_context}
-
-    # Additional information: 
-    # {pattern_context}
-
-    # Question: What patterns or tactics are applicable for the requirement: ``{requirement}``?
-
-    # Helpful answer:"""
 
     SELECTION_PROMPT_TEMPLATE_RAG = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed. Additional information can be included.
@@ -378,23 +339,6 @@ class PatternSuggestionCopilot(BaseCopilot):
 
     Helpful answer:"""
 
-    # SELECTION_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed.
-    # The question at the end is about a requirement that this software system must fulfill. 
-    # The requirement itself is enclosed by backticks. Remember to focus on the requirement.
-    # Answer with a plain list of patterns that might be applicable for the requirement. 
-    # Return the patterns in JSON format. Only include the names of the patterns in the JSON structure, nothing else.
-    # If the context is empty, just return an empty list,
-    # Double-check if the requirement is clear and unambiguous for the provided context.
-    # Do not change or alter the original requirement in any way.
-    # If the requirement does not make sense for the context or is unclear or ambiguous, just return an empty list,
-    # do not try to provide irrelevant patterns.
-
-    # Context: {system_context}
-
-    # Question: What patterns or tactics are applicable for the requirement: ``{requirement}``?
-
-    # Helpful answer:"""
 
     SELECTION_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed.
@@ -414,35 +358,6 @@ class PatternSuggestionCopilot(BaseCopilot):
 
     Helpful answer:"""
 
-    # COMPARISON_PROMPT_TEMPLATE_RAG = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed. Additional information can be included.
-    # The question at the end is about a requirement that this software system must fulfill. 
-    # The requirement itself is enclosed by backticks. 
-    # I selected a list of candidate patterns. 
-    # Your main task is to compare and rank these patterns from best to worst based on the adequacy of each pattern for the requirement.
-    # Use only patterns from the provided list, but you might discard patterns being unsuitable for the requirement.
-    # For each ranked pattern include the following data: 
-    # - pattern name, 
-    # - a short description, 
-    # - and concise pros and cons of using the pattern instantiated on the specific requirement; 
-    # Additional information for contextualizing the selected patterns is provided below. If this information is not present, 
-    # then return that you don't have sufficient information for the comparison.
-    # In your answer, return your ranking as a numbered list in textual format.
-    # In addition, after the ranking, briefly explain how the first pattern in the ranking can be applied to satisfy the requirement.
-    # If the requirement does not make sense for the context, or is unclear or ambiguous, do not make any comparison and
-    # just return that you don't have sufficient information.
-    # Do not try to compare or return irrelevant patterns.
-
-    # Patterns: {patterns}
-
-    # Context: {system_context}
-
-    # Additional information: 
-    # {pattern_context}
-
-    # Question: Can you compare and rank only those patterns above that are applicable for the requirement ``{requirement}``?
-
-    # Helpful Answer:"""
 
     COMPARISON_PROMPT_TEMPLATE_RAG = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed. Additional information can be included.
@@ -474,30 +389,6 @@ class PatternSuggestionCopilot(BaseCopilot):
 
     Helpful Answer:"""
 
-    # COMPARISON_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed.Additional information can be included.
-    # The question at the end is about a requirement that this software system must fulfill. 
-    # The requirement itself is enclosed by backticks. 
-    # I selected a list of candidate patterns. 
-    # Your main task is to compare and rank these patterns from best to worst based on the adequacy of each pattern for the requirement.
-    # Use only patterns from the provided list, but you might discard patterns being unsuitable for the requirement.
-    # For each ranked pattern include the following data: 
-    # - pattern name, 
-    # - a short description, 
-    # - and concise pros and cons of using the pattern instantiated on the specific requirement; 
-    # In your answer, return your ranking as a numbered list in textual format.
-    # In addition, after the ranking, briefly explain how the first pattern in the ranking can be applied to satisfy the requirement.
-    # If the requirement does not make sense for the context, or is unclear or ambiguous, do not make any comparison and
-    # just return that you don't have sufficient information.
-    # Do not try to compare or return irrelevant patterns.
-
-    # Patterns: {patterns}
-
-    # Context: {system_context}
-
-    # Question: Can you compare and rank only those patterns above that are applicable for the requirement ``{requirement}``?
-
-    # Helpful Answer:"""
 
     COMPARISON_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed. Additional information can be included.
@@ -523,6 +414,7 @@ class PatternSuggestionCopilot(BaseCopilot):
     Question: Can you compare and rank only those patterns above that are applicable for these requirements ``{requirements}``?
 
     Helpful Answer:"""
+
 
     def __init__(self, sys_store, dk_store, llm, sys_id="DAS-P1-2023", show_prompts=False) -> None:
         self.llm = llm
@@ -578,7 +470,7 @@ class PatternSuggestionCopilot(BaseCopilot):
         if openai_functions:
             output_parser2 = PydanticToolsParser(tools=[PatternRanking, PatternAnalysis])
         else:
-            output_parser2 = StrOutputParser() # JsonOutputParser() # StrOutputParser() 
+            output_parser2 = StrOutputParser() 
         # output_parser2 = JsonOutputParser(pydantic_object=PatternRanking) 
         # output_parser2 = PydanticOutputParser(pydantic_object=PatternRanking) 
         self.comparison_chain = self.comparison_prompt | self.llm | output_parser2
@@ -587,14 +479,10 @@ class PatternSuggestionCopilot(BaseCopilot):
         pipeline = DocumentCompressorPipeline(transformers=[redundancy_filter])
         self.compression_retriever = ContextualCompressionRetriever(base_compressor=pipeline, base_retriever=retriever)
     
-    def select_patterns(self, requirement): # TODO: Modificado. Sino, tenía que setear el requirement por fuera
+    def select_patterns(self, requirement): 
         self.requirement = requirement # TODO: This requirement can be a string list
         
-        # req, patterns = self.fetch_requirement(self.requirement)
-        # if req is not None:
-        #     self.requirement = req
-        
-        # TODO: Improve this part
+        # TODO: This part needs to be improved
         if requirement.startswith("[") and requirement.endswith("]"):
             req_list = requirement[requirement.find("[")+1:requirement.find("]")].split(',')
             requirement = []
@@ -613,43 +501,34 @@ class PatternSuggestionCopilot(BaseCopilot):
                 requirement = req
                 self.requirement = requirement     
 
-        # formated_requirements = requirement
-        # if isinstance(requirement, list):
-        #     formated_requirements = "\n\n".join(doc for doc in requirement)
         print("Requirement:", self.requirement)
         
         if len(patterns) == 0:
             retrieved_docs = self.compression_retriever.get_relevant_documents(requirement) 
             print(len(retrieved_docs), "retrieved documents from knowledge base (after compression) -  selection")
 
-            #if (self.target is None) or (len(retrieved_docs) > 0):
             try:
                 patterns = self.selection_chain.invoke({"system_context": self.summary, "requirements": self.requirement, 
                                                              "pattern_context": PatternSuggestionCopilot._format_docs(retrieved_docs)},
                                                              config=self.config)
             except OutputParserException:
-                # print("Error:", e)
                 patterns = []
         
         return patterns
     
     def _filter_pattern_queries(self, patterns):               
-        # print("Patterns query:", patterns)
         retrieved_docs = []
         mapped_patterns = []
         for p in patterns:
             pquery = "Tell me about the " + p
             pquery_docs = self.compression_retriever.get_relevant_documents(pquery) 
             if len(pquery_docs) > 0:
-                # retrieved_docs = retrieved_docs + pquery_docs
                 retrieved_docs.append(pquery_docs[0])
                 mapped_patterns.append(p)
         
         return retrieved_docs, mapped_patterns
 
-    def compare_patterns_for_requirement(self, patterns, openai_functions=False): # TODO: Modificado, este tiene que recibir la lista de parámetros, sino, no se puede hacer lo que hablamos ayer
-        
-        # print("Input patterns:", patterns)
+    def compare_patterns_for_requirement(self, patterns, openai_functions=False): 
         self.patterns = [p+' pattern' if 'pattern' not in p.lower() else p for p in patterns]
         
         retrieved_docs, mapped_patterns = self._filter_pattern_queries(self.patterns)
@@ -657,13 +536,10 @@ class PatternSuggestionCopilot(BaseCopilot):
         if self.target is not None: # It's not zero shot
             print("Mapped patterns:", mapped_patterns)
             self.patterns = mapped_patterns
-        # pprint.pprint(retrieved_docs)
-        # print("Requirement:", self.requirement)
-        # print(" patterns:",self. patterns)
 
         json_format = 'textual'
         if openai_functions:
-            json_format = 'json'
+            json_format = 'JSON'
         
         comparison = None
         if (len(patterns) > 0) and ((self.target is None) or (len(retrieved_docs) > 0)):
@@ -673,12 +549,8 @@ class PatternSuggestionCopilot(BaseCopilot):
                                                        config=self.config)
             # print(comparison)
 
-        # TODO: Should we update a new requirement or its associated patterns in the database?
-
-        # TODO: Need to fix this part
+        # TODO: This part needs to reviewed/improved
         if comparison is not None:
-            # pprint.pprint(comparison)
-            # decision = comparison['ranking'][0]['pattern_name']
             if openai_functions:
                 # Warning: Assuming the comparison is a Pydantic object!
                 decision = comparison[0].explanation # comparison[0].ranking[0].pattern_name
@@ -689,15 +561,6 @@ class PatternSuggestionCopilot(BaseCopilot):
                 return json.loads(json_list), decision
             else:
                 decision = None
-                # if 'explanation' in comparison:
-                #     decision = comparison['explanation']
-                # if 'ranking' in comparison:
-                #     ranking = comparison['ranking']
-                #     alternatives = ["\n".join(r.values()) for r in ranking]
-                #     comparison = "\n".join(alternatives)
-                # else:
-                #     comparison = json.dumps(comparison)
-                # print("List:", comparison)
                 if isinstance(comparison, list) and len(comparison) > 0:
                     sp = comparison
                     decision = sp[-1]
@@ -710,8 +573,38 @@ class PatternSuggestionCopilot(BaseCopilot):
                     return comparison, decision
         
         return None, None
+    
+    def process_requirements(self, requirement):
+        self.decision = ""
+        self.patterns = self.select_patterns(requirement)
+        print(self.requirement)
+        print()
+        
+        comparison, decision = self.compare_patterns_for_requirement(self.patterns, openai_functions=True) 
+        if comparison is None:
+            comparison = "No comparison available"
+            decision = ""          
+        print(">>Answer:")
+        pprint.pprint(comparison)
+        print()
+            
+        self.decision = decision
+        print(">>Decision:", decision)
 
-    def launch(self, openai_functions=True):
+        result = dict()
+        result['description'] = decision
+        result['ranking'] = comparison
+        result['requirement'] = requirement
+        # result['pattern'] = ""
+        
+        decision_keys = list(self.sys_store.find_decision(description=decision).keys())
+        if len(decision_keys) > 0:
+            result['decision'] = decision_keys[0]
+        else:
+            result['decision']= ""
+        return result
+
+    def launch(self, openai_functions=False):
         print()
         if self.target is None:
             print("I'm a specialist in: EVERYTHING! (no RAG)")
@@ -720,11 +613,9 @@ class PatternSuggestionCopilot(BaseCopilot):
         while True:
             # this prints to the terminal, and waits to accept an input from the user
             requirement = input('>>Requirement: ')
-            # give us a way to exit the script
             if requirement == "exit" or requirement == "quit" or requirement == "q":
                 print('Bye!')
                 print()
-                # sys.exit()
                 return
             elif requirement == "?":
                 pprint.pprint(self.get_requirements())
@@ -755,6 +646,16 @@ class PatternSuggestionCopilot(BaseCopilot):
                 print()
 
 
+class PatternAssessment(BaseModel):
+    # decision_name: str = Field(description="name of the decision")
+    # description: str = Field(description="description of the decision")
+    appropriateness: Optional[str] = Field(description="assessment of the decision as appropriate or not for the requirement plus the reasons for this assessment")
+    clarifying_questions: Optional[str] = Field(description="a list of additional questions that expert architects might ask about the decision")
+    assumptions_and_constraints: Optional[str] = Field(description="a list of assumptions the decision is based on or constraints imposed by the decision")
+    qa_consequences: Optional[str] = Field(description="consequences of the decision on system quality attributes")
+    risks_and_tradeoffs: Optional[str] = Field(description="a list of potential risks and tradeoffs implied by the decision")
+    followup_decisions: Optional[str] = Field(description="a list of technology and implementation decisions that are necessary to implement the decision")
+
 class PatternAssessmentCopilot(BaseCopilot):
 
     SYSTEM_PROMPT_TEMPLATE = """You are an experienced software architect that assists a novice developer 
@@ -762,40 +663,6 @@ class PatternAssessmentCopilot(BaseCopilot):
     If you don't know the answer, then just say so, don't try to make up an answer.
     """
 
-    # ANALYSIS_PROMPT_TEMPLATE_RAG = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed. Additional information can be included.
-    # There is also a requirement that this software system must fulfill. 
-    # For that requirement, I made a design decision that is supposed to address the requirement. 
-    # This decision can be expressed as a well-known design pattern, or an architectural style, or an 
-    # architectural tactic, or a design principle.
-    # The question at the end is about my decision, which is enclosed by backticks. 
-    # I want to better understand the implications of my decision for the context and requirement provided.
-    # Please think step by step and assess the following aspects in your answer:
-    # - whether my design decision is appropriate or not. 
-    # - a list of clarifying questions that expert architects might ask about my decision in the provided context.
-    # - assumptions and constraints that my decision is based on.
-    # - consequences of my decision on quality attributes of the system.
-    # - potential risks and trade-offs implied by the decision.
-    # - additional follow-up decisions that are necessary to implement my decision.
-
-    # Focus on addressing the specific requirement with the decision, rather than on the general use cases for the decision.
-    # Return your answer in plain text with bullets for the key points of your assessment.
-    # Carefully check that my design decision is related to the additional information, do not admit dubious or unknown decisions.
-    # If the decision is dubious or unknown just say so and don't perform any assessment.
-    # If my decision is not related to the additional information, or the part with addition information is empty,
-    # or the context is empy, just say that you don't have enough context for the assessment.
-    # If my decision does not make sense for the context or is not appropriate for the requirement, just state what the problem is.
-
-    # Context: {system_context}
-
-    # Requirement: {requirement}
-
-    # Additional information: 
-    # {pattern_context}
-
-    # Question: What is your assessment of my decision ``{decision}`` for the requirement?
-
-    # Helpful Answer:"""
 
     ANALYSIS_PROMPT_TEMPLATE_RAG = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed. Additional information can be included.
@@ -806,7 +673,7 @@ class PatternAssessmentCopilot(BaseCopilot):
     The question at the end is about my decision, which is enclosed by backticks. 
     I want to better understand the implications of my decision for the context and requirements provided.
     Please think step by step and assess the following aspects in your answer:
-    - whether my design decision is appropriate or not. 
+    - whether my design decision is appropriate or not, plus an explanation of your assessment. 
     - a list of clarifying questions that expert architects might ask about my decision in the provided context.
     - assumptions and constraints that my decision is based on.
     - consequences of my decision on quality attributes of the system.
@@ -814,7 +681,7 @@ class PatternAssessmentCopilot(BaseCopilot):
     - additional follow-up decisions that are necessary to implement my decision.
 
     Focus on addressing the specific requirements with the decision, rather than on the general use cases for the decision.
-    Return your answer in plain text with bullets for the key points of your assessment.
+    Return the key points of your assessment in {format} format.
     Carefully check that my design decision is related to the additional information, do not admit dubious or unknown decisions.
     If the decision is dubious or unknown just say so and don't perform any assessment.
     If my decision is not related to the additional information, or the part with addition information is empty,
@@ -833,34 +700,6 @@ class PatternAssessmentCopilot(BaseCopilot):
 
     Helpful Answer:"""
 
-    # ANALYSIS_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed. There is also a requirement that this software system must fulfill. 
-    # For that requirement, I made a design decision that is supposed to address the requirement. 
-    # This decision can be expressed as a well-known design pattern, or an architectural style, or an 
-    # architectural tactic, or a design principle.
-    # The question at the end is about my decision, which is enclosed by backticks. 
-    # I want to better understand the implications of my decision for the context and requirement provided.
-    # Please think step by step and assess the following aspects in your answer:
-    # - whether my design decision is appropriate or not. 
-    # - a list of clarifying questions that expert architects might ask about my decision in the provided context.
-    # - assumptions and constraints that my decision is based on.
-    # - consequences of my decision on quality attributes of the system.
-    # - potential risks and trade-offs implied by the decision.
-    # - additional follow-up decisions that are necessary to implement my decision.
-
-    # Focus on addressing the specific requirement with the decision, rather than on the general use cases for the decision.
-    # Return your answer in plain text with bullets for the key points of your assessment.
-    # Carefully check my design decision and do not admit dubious or unknown decisions. 
-    # If the decision is dubious or unknown just say so and don't perform any assessment.
-    # If my decision does not make sense for the context or is not appropriate for the requirement, just state what the problem is.
-
-    # Context: {system_context}
-
-    # Requirement: {requirement}
-
-    # Question: What is your assessment of my decision ``{decision}`` for the requirement?
-
-    # Helpful Answer:"""
 
     ANALYSIS_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed. There is also a list of requirements that this software system must fulfill. 
@@ -870,7 +709,7 @@ class PatternAssessmentCopilot(BaseCopilot):
     The question at the end is about my decision, which is enclosed by backticks. 
     I want to better understand the implications of my decision for the context and requirements provided.
     Please think step by step and assess the following aspects in your answer:
-    - whether my design decision is appropriate or not. 
+    - whether my design decision is appropriate or not, plus an explanation of your assessment. 
     - a list of clarifying questions that expert architects might ask about my decision in the provided context.
     - assumptions and constraints that my decision is based on.
     - consequences of my decision on quality attributes of the system.
@@ -878,7 +717,7 @@ class PatternAssessmentCopilot(BaseCopilot):
     - additional follow-up decisions that are necessary to implement my decision.
 
     Focus on addressing the specific requirements with the decision, rather than on the general use cases for the decision.
-    Return your answer in plain text with bullets for the key points of your assessment.
+    Return the key points of your assessment in {format} format.
     Carefully check my design decision and do not admit dubious or unknown decisions. 
     If the decision is dubious or unknown just say so and don't perform any assessment.
     If my decision does not make sense for the context or is not appropriate for the requirements, just state what the problem is.
@@ -920,7 +759,7 @@ class PatternAssessmentCopilot(BaseCopilot):
         self.decision = ""
         self.analysis = ""
     
-    def configure_retriever(self, collection:str=None, threshold=None):
+    def configure_retriever(self, collection:str=None, threshold=None, openai_functions=False):
         
         if threshold is None:
             threshold = PatternAssessmentCopilot.THRESHOLD
@@ -939,14 +778,17 @@ class PatternAssessmentCopilot(BaseCopilot):
             ("human", analysis) # human, the user text   
         ])
 
-        output_parser = StrOutputParser()
+        if openai_functions:
+            output_parser = PydanticToolsParser(tools=[PatternAssessment])
+        else:
+            output_parser = StrOutputParser() 
         self.main_chain = self.analysis_prompt | self.llm | output_parser
 
         redundancy_filter = EmbeddingsRedundantFilter(embeddings=self.embeddings)
         pipeline = DocumentCompressorPipeline(transformers=[redundancy_filter])
         self.compression_retriever = ContextualCompressionRetriever(base_compressor=pipeline, base_retriever=retriever)
     
-    def assess_decision(self, requirement, decision): 
+    def assess_decision(self, requirement, decision, openai_functions=False): 
             self.requirement = requirement # TODO: Note that this requirement can be actually a string list
             self.decision = decision
     
@@ -957,34 +799,75 @@ class PatternAssessmentCopilot(BaseCopilot):
             if isinstance(requirement, list):
                 formated_requirements = "\n\n".join(doc for doc in requirement)
     
+            json_format = 'textual'
+            if openai_functions:
+                json_format = 'JSON'
+
             analysis = None
             if (self.target is None) or (len(retrieved_docs) > 0):
                 analysis = self.main_chain.invoke({"system_context": self.summary, "requirements": formated_requirements, 
                                                 "pattern_context": PatternAssessmentCopilot._format_docs(retrieved_docs),
-                                                "decision": decision}, config=self.config)
+                                                "decision": decision, "format": json_format}, config=self.config)
+            
+            if openai_functions:
+                temp = json.loads(analysis[0].json())
+                return temp
+            
             return analysis
     
-    def launch(self):
+    def process_requirements_decision(self, requirement, decision):
+        if requirement.startswith("[") and requirement.endswith("]"):
+            req_list = requirement[requirement.find("[")+1:requirement.find("]")].split(',')
+            requirement = []
+            for r in req_list:
+                req, _ = self.fetch_requirement(r.strip())
+                if req is not None:
+                    requirement.append(req)
+                else:
+                    requirement.append(r.strip())
+            patterns = None
+        else:   
+            req, patterns = self.fetch_requirement(requirement)
+            if req is not None:
+                requirement = req
+        print(requirement)
+        print(patterns)
+        print()
+
+        dec, reqs = self.fetch_decision(decision)
+        if dec is not None:
+            decision = dec
+        print(decision)
+        print()
+        analysis = self.assess_decision(requirement, decision, openai_functions=True)
+        if analysis is None:
+            analysis = "No assessment available"
+        self.analysis = analysis     
+        print(">>Answer:")
+        pprint.pprint(analysis)
+
+        return analysis
+
+    def launch(self, openai_functions=False):
         print()
         if self.target is None:
             print("I'm a specialist in: EVERYTHING! (no RAG)")
         else:
             print("I'm a specialist in:", self.target.upper(), "(RAG)")
+        # print(openai_functions)
         while True:
             # this prints to the terminal, and waits to accept an input from the user
             self.analysis = ""
             requirement = input('>>Requirement: ')
-            # give us a way to exit the script
             if requirement == "exit" or requirement == "quit" or requirement == "q":
                 print('Bye!')
                 print()
-                # sys.exit()
                 return
             elif requirement == "?":
                 pprint.pprint(self.get_requirements())
                 print()
             else:
-                # TODO: Improve this part
+                # TODO: This part needs to be improved
                 if requirement.startswith("[") and requirement.endswith("]"):
                     req_list = requirement[requirement.find("[")+1:requirement.find("]")].split(',')
                     requirement = []
@@ -1013,18 +896,21 @@ class PatternAssessmentCopilot(BaseCopilot):
                 if decision == "exit" or decision == "quit" or decision == "q":
                     print('Bye!')
                     print()
-                    # sys.exit()
                     return
                 dec, reqs = self.fetch_decision(decision)
                 if dec is not None:
                     decision = dec
                 print(decision)
                 print()
-                analysis = self.assess_decision(requirement, decision)
+                analysis = self.assess_decision(requirement, decision, openai_functions=openai_functions)
                 if analysis is None:
                     analysis = "No assessment available"
                 self.analysis = analysis     
-                print(">>Answer:", analysis)
+                print(">>Answer:")
+                if openai_functions:
+                    pprint.pprint(analysis)
+                else:
+                    print(analysis)
                 print()
     
 
@@ -1035,53 +921,13 @@ class ADRWriterCopilot(BaseCopilot):
     If you don't know how to perform the task, then just say so, don't try to make up an answer.
     """
 
-    # ADR_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and 
-    # operating enviroment for a software system that needs to be developed. 
-    # As part of the context, there is also a requirement that this software system must fulfill.
-    # I made a main design decision that addresses the requirement. 
-    # For that decision, I might also have an assesment of its pros, cons, and risks, among other aspects.
-
-    # Based on all this information, please specify an Architecture Decision Record (ADR) for me.
-    # The ADR template includes the following sections: 'title', 'motivation', 'decision', 'pros' of the decision, 
-    # 'cons' of the decision, and 'alternatives' considered.
-    # For writing the sections of the ADR, think step by step and use the following rules:
-    # 1. The 'title' section should be short and descriptive of the purpose of the main design decision.
-    # 2. The 'motivation' section should explain the problem being solved by the decision. Both the system context and 
-    # the requirement above should be blended in the motivation. Do not use bullets for this section.
-    # 3. The 'decision' section should present the main design decision made and explain how it addresses the requirement.
-    # Additional information from the assessment about clarifying questions, assumptions and follow-up decisions can
-    # be also included in this section. Do not use bullets for this section.
-    # 4. The 'pros' and 'cons' sections should list the advantages and disadvantages of the main decision. Information from
-    # the assessment should be used to populate these sections.
-    # 5. The 'alternatives' section should list any other design decisions that could address the requirement in the system context
-    # provided, but were not chosen. List up to 3 alternatives and briefly describe each of them. Information from the assessment
-    # can be used to populate this section.
-
-    # Focus on addressing the specific requirement with the decision, rather than on the general use cases for the decision.
-    # Return your answer in plain text with bullets for the different sections of the ADR.
-    # Carefully check my design decision and do not admit dubious or unknown decisions. 
-    # If the decision is dubious or unknown just state the reasons, don't make the ADR up.
-    # Otherwise, only return the ADR and nothing else.
-    
-    # Context: 
-    # {system_context}
-
-    # Requirement: {requirement}
-
-    # Decision: {decision}
-
-    # Assessment: 
-    # {assessment}
-
-    # Task: Write an Architecture Decision Record (ADR) based on the context, requirement, decision, and assessment provided.
-
-    # Helpful Answer:"""
 
     ADR_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and 
     operating enviroment for a software system that needs to be developed. 
     As part of the context, there is also a list of requirements that this software system must fulfill.
     I made a main design decision that addresses all the requirements. 
-    For that decision, I might also have an assesment of its pros, cons, and risks, among other aspects.
+    I might also have an assesment covering several aspects of the decision.
+    I might also include an ordered list of design alternatives for the main decision. The main decision is often at the top of this list.
 
     Based on all this information, please specify an Architecture Decision Record (ADR) for me.
     The ADR template includes the following sections: 'title', 'motivation', 'decision drivers', 'main decision', 
@@ -1093,18 +939,18 @@ class ADRWriterCopilot(BaseCopilot):
     3. The 'decision drivers' section should simply list all the given requirements.
     4. The 'main decision' section should present the design decision chosen and explain how it addresses the requirements.
     Additional information from the assessment about clarifying questions, assumptions and follow-up decisions can
-    be also included in this section. Do not use bullets for this section.
+    also be included in this section, but integrated into the text. Do not use bullets for this section.
     5. The 'alternatives' section should list any other design decisions that could address the requirements in the system context
-    provided, but were not chosen. List up to 3 alternatives and briefly describe each of them. Information from the assessment
-    can be used to help populate this section.
-    6. The 'pros' section should list the advantages of each of the decisions (both main decision and alternative decisions). 
+    provided, but were not chosen. If an ordered list of design alternatives is included below, please use only those alternatives 
+    for this section and describe them briefly. If the ordered list is not included, leave the 'alternatives' section empty.
+    6. The 'pros' section should list the advantages of each of the decisions (both main decision and design alternatives). 
     Please organize the advantages according to each of the decisions.
-    7. The 'cons' section should list the disadvantages of each of the decisions (both main decision and alternative decisions). 
+    7. The 'cons' section should list the disadvantages of each of the decisions (both main decision and design alternatives). 
     Please organize the disadvantages according to each of the decisions.
-    Information from the assessment can be used in the advantages and disadvantages for the main decision.
+    Information from the assessment below can be used to inform the 'pros' and 'cons' for the main decision.
 
     Focus on addressing the specific requirements with the decision, rather than on the general use cases for the decision.
-    Return your answer in plain text with bullets for the different sections of the ADR.
+    Return your answer in Markdown format considering the different sections of the ADR template.
     Carefully check my design decision and do not admit dubious or unknown decisions. 
     If the decisions are dubious or unknown just state the reasons, don't make the ADR up.
     If everything is Ok, then only return the sections of the ADR and nothing else.
@@ -1116,6 +962,9 @@ class ADRWriterCopilot(BaseCopilot):
     {requirements}
 
     Decision: {decision}
+
+    Ranking of alternatives (optional): 
+    {ranking}
 
     Assessment (optional): 
     {assessment}
@@ -1147,10 +996,11 @@ class ADRWriterCopilot(BaseCopilot):
     def reset(self):
         result = self.sys_store.get_system(self.sys_id, summary=True)
         self.summary = result['documents'][0] # This is the string with the description
-        print(self.summary)
+        # print(self.summary)
         self.requirement = ""
         self.decision = ""
         self.analysis = ""
+        self.ranking = ""
     
     def configure_retriever(self, collection:str=None, threshold=None):
         
@@ -1179,13 +1029,42 @@ class ADRWriterCopilot(BaseCopilot):
         redundancy_filter = EmbeddingsRedundantFilter(embeddings=self.embeddings)
         pipeline = DocumentCompressorPipeline(transformers=[redundancy_filter])
         self.compression_retriever = ContextualCompressionRetriever(base_compressor=pipeline, base_retriever=retriever)
+    
+    def process_requirements_decision_analysis(self, requirement, decision, analysis="", ranking=""):
+        
+        if requirement.startswith("[") and requirement.endswith("]"):
+            req_list = requirement[requirement.find("[")+1:requirement.find("]")].split(',')
+            requirement = []
+            for r in req_list:
+                req, _ = self.fetch_requirement(r.strip())
+                if req is not None:
+                    requirement.append(req)
+                else:
+                    requirement.append(r.strip())
+            patterns = None
+        else:   
+            req, patterns = self.fetch_requirement(requirement)
+            if req is not None:
+                requirement = req
+        print(requirement)
+        print(patterns)
+        print()
 
-    def write_adr(self, requirement, decision, analysis=""): 
+        dec, reqs = self.fetch_decision(decision)
+        if dec is not None:
+            decision = dec
+        print(decision)
+        print()
+
+        print(ranking)
+        print()
+
+        return self.write_adr(requirement, decision, analysis, ranking)
+
+    def write_adr(self, requirement, decision, analysis="", ranking=""): 
         self.requirement = requirement # TODO: Note that this requirement could be a list (as a string)
         self.decision = decision
     
-        # retrieved_docs = self.compression_retriever.get_relevant_documents(decision) 
-        # print(len(retrieved_docs), "retrieved documents from knowledge base (after compression) - analysis")
         formated_requirements = requirement
         if isinstance(requirement, list):
             formated_requirements = "\n\n".join(doc for doc in requirement)
@@ -1193,7 +1072,8 @@ class ADRWriterCopilot(BaseCopilot):
         adr = None
         if (self.target is None): # or (len(retrieved_docs) > 0):
             adr = self.main_chain.invoke({"system_context": self.summary, "requirements": formated_requirements, 
-                                            "assessment": analysis, "decision": decision}, config=self.config)
+                                            "assessment": analysis, "decision": decision, "ranking": ranking}, 
+                                            config=self.config)
             if 'sorry' in adr:
                 adr = None
         return adr
@@ -1208,17 +1088,15 @@ class ADRWriterCopilot(BaseCopilot):
             # this prints to the terminal, and waits to accept an input from the user
             self.analysis = ""
             requirement = input('>>Requirement: ')
-            # give us a way to exit the script
             if requirement == "exit" or requirement == "quit" or requirement == "q":
                 print('Bye!')
                 print()
-                # sys.exit()
                 return
             elif requirement == "?":
                 pprint.pprint(self.get_requirements())
                 print()
             else:
-                # TODO: Improve this part
+                # TODO: This part needs to be improved
                 if requirement.startswith("[") and requirement.endswith("]"):
                     req_list = requirement[requirement.find("[")+1:requirement.find("]")].split(',')
                     requirement = []
@@ -1247,7 +1125,6 @@ class ADRWriterCopilot(BaseCopilot):
                 if decision == "exit" or decision == "quit" or decision == "q":
                     print('Bye!')
                     print()
-                    # sys.exit()
                     return
                 dec, _ = self.fetch_decision(decision)
                 if dec is not None:
@@ -1262,41 +1139,12 @@ class ADRWriterCopilot(BaseCopilot):
                 print()
 
 
-
 class PatternConsistencyCheckingCopilot(BaseCopilot):
 
     SYSTEM_PROMPT_TEMPLATE = """You are an experienced software architect that assists a novice developer 
     to design a system. Use the following pieces of context to perform the task at the end.
     If you don't know how to perform the task, then just say so, don't try to make up an answer.
     """
-
-    # CHECKING_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
-    # for a software system that needs to be developed. There is also a requirement that this software system must fulfill. 
-    # For that requirement, I made a main design decision to address the requirement. 
-    # My main decision is enclosed by backticks below.
-    # There are also additional decisions either addressing the same requirement or other requirements of the system.
-    
-    # I want to check the overall consistency of my main decision with the related additional decisions.
-    # Any of the decisions above can be expressed as a well-known design pattern, or an architectural style, or an 
-    # architectural tactic, or a design principle.
-    
-    # Report any conflict or inconsistency between the main decision and any of the additional decisions.
-    # Focus on addressing the specific requirement, rather than on the general use cases for the decisions.
-    # Return your answer in plain text with bullets for the key points of your analysis.
-    # Carefully check my main decision and do not admit dubious or unknown decisions. 
-    # If my main decision is dubious or unknown just say so and don't perform any consistency analysis.
-    # If my decision does not make sense for the context or is not appropriate for the requirement, just state what the problem is.
-
-    # Context: {system_context}
-
-    # Requirement: {requirement}
-    
-    # Additional decisions: 
-    # {additional_decisions}
-
-    # Task: Please check the consistency of my main decision ``{decision}`` in the context of the additional decisions
-
-    # Helpful Answer:"""
 
     CHECKING_PROMPT_TEMPLATE_ZEROSHOT = """The context below describes the main characteristics and operating enviroment
     for a software system that needs to be developed. There is also a list of requirements that this software system must fulfill. 
@@ -1382,11 +1230,10 @@ class PatternConsistencyCheckingCopilot(BaseCopilot):
         self.compression_retriever = ContextualCompressionRetriever(base_compressor=pipeline, base_retriever=retriever)
     
     def get_related_decisions(self, requirement, decision):
-        # print(decision)
-        related_decisions1 = self.sys_store.search_decisions_for_requirement(requirement, semantic_search=True)
-        # print("--related by requirement:", list(related_decisions1.keys()))
+        related_decisions1 = self.sys_store.search_decisions_for_requirement(requirement, semantic_search=True, forbidden_decision=decision)
+        print("--related by requirement:", list(related_decisions1.keys()))
         related_decisions2 = self.sys_store.search_related_decisions(decision, semantic_search=True)
-        # print("--related by decision:", list(related_decisions2.keys()))
+        print("--related by decision:", list(related_decisions2.keys()))
         related_decisions1.update(related_decisions2)
         return related_decisions1
     
@@ -1399,7 +1246,6 @@ class PatternConsistencyCheckingCopilot(BaseCopilot):
             
         related_decisions = self.get_related_decisions(requirement, decision)
         # Filter out the decision itself
-        # related_decisions = { k:v for k,v in related_decisions.items() if v != decision} 
         decision_ids = list(related_decisions.keys())
         related_decisions = list(related_decisions.values())
         print("Related decisions:", related_decisions)
@@ -1428,17 +1274,15 @@ class PatternConsistencyCheckingCopilot(BaseCopilot):
             # this prints to the terminal, and waits to accept an input from the user
             self.analysis = ""
             requirement = input('>>Requirement: ')
-            # give us a way to exit the script
             if requirement == "exit" or requirement == "quit" or requirement == "q":
                 print('Bye!')
                 print()
-                # sys.exit()
                 return
             elif requirement == "?":
                 pprint.pprint(self.get_requirements())
                 print()
             else:
-                # TODO: Improve this part
+                # TODO: This part needs to be improved
                 if requirement.startswith("[") and requirement.endswith("]"):
                     req_list = requirement[requirement.find("[")+1:requirement.find("]")].split(',')
                     requirement = []
@@ -1467,7 +1311,6 @@ class PatternConsistencyCheckingCopilot(BaseCopilot):
                 if decision == "exit" or decision == "quit" or decision == "q":
                     print('Bye!')
                     print()
-                    # sys.exit()
                     return
                 dec, _ = self.fetch_decision(decision)
                 if dec is not None:
