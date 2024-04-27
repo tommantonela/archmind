@@ -154,10 +154,11 @@ class BaseCopilot:
     def get_decisions_by_requirement(self):
         all_reqs = self.get_requirements()
         result = dict()
-        for r in all_reqs.keys():
-            decisions = list(self.sys_store.search_decisions_for_requirement(r).values())
-            if len(decisions) > 0:
-                result[r] = decisions
+        if all_reqs is not None:
+            for r in all_reqs.keys():
+                decisions = list(self.sys_store.search_decisions_for_requirement(r).values())
+                if len(decisions) > 0:
+                    result[r] = decisions
         return result
 
 
