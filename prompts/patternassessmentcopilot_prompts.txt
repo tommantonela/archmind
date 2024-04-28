@@ -1,0 +1,82 @@
+
+SYSTEM_PROMPT_TEMPLATE
+
+"""You are an experienced software architect that assists a novice developer 
+    to design a system. Use the following pieces of context to answer the question at the end.
+    If you don't know the answer, then just say so, don't try to make up an answer.
+    """
+	
+
+ANALYSIS_PROMPT_TEMPLATE_RAG
+
+"""The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed. Additional information can be included.
+    There is also a list of requirements that this software system must fulfill. 
+    For these requirements, I made a design decision that is supposed to address all the requirements. 
+    This decision can be expressed as a well-known design pattern, or an architectural style, or an 
+    architectural tactic, or a design principle.
+    The question at the end is about my decision, which is enclosed by backticks. 
+    I want to better understand the implications of my decision for the context and requirements provided.
+    Please think step by step and assess the following aspects in your answer:
+    - whether my design decision is appropriate or not, plus an explanation of your assessment. 
+    - a list of clarifying questions that expert architects might ask about my decision in the provided context.
+    - assumptions and constraints that my decision is based on.
+    - consequences of my decision on quality attributes of the system.
+    - potential risks and trade-offs implied by the decision.
+    - additional follow-up decisions that are necessary to implement my decision.
+
+    Focus on addressing the specific requirements with the decision, rather than on the general use cases for the decision.
+    Return the key points of your assessment in {format} format.
+    Carefully check that my design decision is related to the additional information, do not admit dubious or unknown decisions.
+    If the decision is dubious or unknown just say so and don't perform any assessment.
+    If my decision is not related to the additional information, or the part with addition information is empty,
+    or the context is empy, just say that you don't have enough context for the assessment.
+    If my decision does not make sense for the context or is not appropriate for the requirements, just state what the problem is.
+
+    Context: {system_context}
+
+    List of requirements: 
+    {requirements}
+
+    Additional information: 
+    {pattern_context}
+
+    Question: What is your assessment of my decision ``{decision}`` for the requirements above?
+
+    Helpful Answer:"""
+
+
+
+ANALYSIS_PROMPT_TEMPLATE_ZEROSHOT
+
+"""The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed. There is also a list of requirements that this software system must fulfill. 
+    For these requirements, I made a design decision that is supposed to address all the requirements. 
+    This decision can be expressed as a well-known design pattern, or an architectural style, or an 
+    architectural tactic, or a design principle.
+    The question at the end is about my decision, which is enclosed by backticks. 
+    I want to better understand the implications of my decision for the context and requirements provided.
+    Please think step by step and assess the following aspects in your answer:
+    - whether my design decision is appropriate or not, plus an explanation of your assessment. 
+    - a list of clarifying questions that expert architects might ask about my decision in the provided context.
+    - assumptions and constraints that my decision is based on.
+    - consequences of my decision on quality attributes of the system.
+    - potential risks and trade-offs implied by the decision.
+    - additional follow-up decisions that are necessary to implement my decision.
+
+    Focus on addressing the specific requirements with the decision, rather than on the general use cases for the decision.
+    Return the key points of your assessment in {format} format.
+    Carefully check my design decision and do not admit dubious or unknown decisions. 
+    If the decision is dubious or unknown just say so and don't perform any assessment.
+    If my decision does not make sense for the context or is not appropriate for the requirements, just state what the problem is.
+
+    Context: {system_context}
+
+    List of requirements: 
+    {requirements}
+
+    Question: What is your assessment of my decision ``{decision}`` for the requirements above?
+
+    Helpful Answer:"""
+
+

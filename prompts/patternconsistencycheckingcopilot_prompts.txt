@@ -1,0 +1,39 @@
+
+SYSTEM_PROMPT_TEMPLATE
+
+"""You are an experienced software architect that assists a novice developer 
+    to design a system. Use the following pieces of context to perform the task at the end.
+    If you don't know how to perform the task, then just say so, don't try to make up an answer.
+    """
+
+CHECKING_PROMPT_TEMPLATE_ZEROSHOT
+
+"""The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed. There is also a list of requirements that this software system must fulfill. 
+    For these requirements, I made a main design decision to intends to address all of them. 
+    My main decision is enclosed by backticks below.
+    There are also additional decisions either addressing my requirements or other requirements of the system.
+    
+    I want to check the overall consistency of my main decision with the related additional decisions.
+    Any of the decisions above can be expressed as a well-known design pattern, or an architectural style, or an 
+    architectural tactic, or a design principle.
+    
+    Report any conflict or inconsistency between the main decision and any of the additional decisions.
+    Focus on addressing the specific requirements, rather than on the general use cases for the decisions.
+    Return your answer in plain text with bullets for the key points of your analysis.
+    Carefully check my main decision and do not admit dubious or unknown decisions. 
+    If my main decision is dubious or unknown just say so and don't perform any consistency analysis.
+    If my decision does not make sense for the context or is not appropriate for the requirements, just state what the problem is.
+
+    Context: {system_context}
+
+    List of requirement: 
+    {requirements}
+    
+    Additional decisions: 
+    {additional_decisions}
+
+    Task: Please check the consistency of my main decision ``{decision}`` in the context of the requirements and additional decisions
+
+    Helpful Answer:"""
+

@@ -1,0 +1,62 @@
+SYSTEM_PROMPT_TEMPLATE
+
+"""You are an experienced software architect that assists a novice developer 
+    to design a system. Use the following pieces of context to perform the task at the end.
+    If you don't know how to perform the task, then just say so, don't try to make up an answer.
+    """
+
+	
+ADR_PROMPT_TEMPLATE_ZEROSHOT
+
+"""The context below describes the main characteristics and 
+    operating enviroment for a software system that needs to be developed. 
+    As part of the context, there is also a list of requirements that this software system must fulfill.
+    I made a main design decision that addresses all the requirements. 
+    I might also have an assesment covering several aspects of the decision.
+    I might also include an ordered list of design alternatives for the main decision. The main decision is often at the top of this list.
+
+    Based on all this information, please specify an Architecture Decision Record (ADR) for me.
+    The ADR template includes the following sections: 'title', 'motivation', 'decision drivers', 'main decision', 
+    'alternative decisions' considered, and 'pros' and 'cons' of all the decisions.
+    For writing the sections of the ADR, think step by step and use the following rules:
+    1. The 'title' section should be short and descriptive of the purpose of the main design decision.
+    2. The 'motivation' section should explain the problem being solved by the decision. Both the system context and 
+    the requirements above should be blended in the motivation. Do not use bullets for this section.
+    3. The 'decision drivers' section should simply list all the given requirements.
+    4. The 'main decision' section should present the design decision chosen and explain how it addresses the requirements.
+    Additional information from the assessment about clarifying questions, assumptions and follow-up decisions can
+    also be included in this section, but integrated into the text. Do not use bullets for this section.
+    5. The 'alternatives' section should list any other design decisions that could address the requirements in the system context
+    provided, but were not chosen. If an ordered list of design alternatives is included below, please use only those alternatives 
+    for this section and describe them briefly. If the ordered list is not included, leave the 'alternatives' section empty.
+    6. The 'pros' section should list the advantages of each of the decisions (both main decision and design alternatives). 
+    Please organize the advantages according to each of the decisions.
+    7. The 'cons' section should list the disadvantages of each of the decisions (both main decision and design alternatives). 
+    Please organize the disadvantages according to each of the decisions.
+    Information from the assessment below can be used to inform the 'pros' and 'cons' for the main decision.
+
+    Focus on addressing the specific requirements with the decision, rather than on the general use cases for the decision.
+    Return your answer in Markdown format considering the different sections of the ADR template.
+    Carefully check my design decision and do not admit dubious or unknown decisions. 
+    If the decisions are dubious or unknown just state the reasons, don't make the ADR up.
+    If everything is Ok, then only return the sections of the ADR and nothing else.
+    
+    Context: 
+    {system_context}
+
+    List of requirements: 
+    {requirements}
+
+    Decision: {decision}
+
+    Ranking of alternatives (optional): 
+    {ranking}
+
+    Assessment (optional): 
+    {assessment}
+
+    Task: Write an Architecture Decision Record based on the context, requirements, decision, and assessment provided.
+
+    Helpful Answer:"""
+
+

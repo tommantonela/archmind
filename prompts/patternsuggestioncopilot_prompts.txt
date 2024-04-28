@@ -1,0 +1,119 @@
+
+SYSTEM_PROMPT_TEMPLATE
+
+"""You are an experienced software architect that assists a novice developer 
+    to design a system. Use the following pieces of context to answer the question at the end.
+    If you don't know the answer, then just say return an empty list, don't try to make up an answer.
+    """
+
+
+SELECTION_PROMPT_TEMPLATE_RAG
+
+"""The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed. Additional information can be included.
+    The question at the end is about a list of requirements that this software system must fulfill. 
+    The requirements themselves are enclosed by backticks. Remember to focus on the requirements.
+    Answer with a plain list of patterns that might be applicable for all the requirements. 
+    For each pattern, assess if the pattern is related to the additional information provided. 
+    If a pattern is not related to the additional information, do not include the pattern in the list.
+    If the part with additional information is empty, just return an empty list.
+    If the context is empty, just return an empty list.
+    Return the patterns in JSON format. Only include the names of the patterns in the JSON structure, nothing else.
+    Double-check if the requirements are clear and unambiguous for the provided context.
+    Do not change or alter the original requirements in any way.
+    If the requirements do not make sense for the context or are unclear or ambiguous, just return an empty list,
+    do not try to provide irrelevant patterns.
+
+    Context: {system_context}
+
+    Additional information: 
+    {pattern_context}
+
+    Question: What patterns or tactics are applicable for these requirements: ``{requirements}``?
+
+    Helpful answer:"""
+
+
+
+SELECTION_PROMPT_TEMPLATE_ZEROSHOT
+
+ """The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed.
+    The question at the end is about a list of requirements that this software system must fulfill. 
+    The requirements themselves are enclosed by backticks. Remember to focus on the requirements.
+    Answer with a plain list of patterns that might be applicable for all the requirements. 
+    Return the patterns in JSON format. Only include the names of the patterns in the JSON structure, nothing else.
+    If the context is empty, just return an empty list,
+    Double-check if the requirements are clear and unambiguous for the provided context.
+    Do not change or alter the original requirements in any way.
+    If the requirements do not make sense for the context or are unclear or ambiguous, just return an empty list,
+    do not try to provide irrelevant patterns.
+
+    Context: {system_context}
+
+    Question: What patterns or tactics are applicable for these requirements: ``{requirements}``?
+
+    Helpful answer:"""
+
+
+
+COMPARISON_PROMPT_TEMPLATE_RAG
+
+"""The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed. Additional information can be included.
+    The question at the end is about a list of requirements that this software system must fulfill. 
+    The requirements themselves are enclosed by backticks. 
+    I selected a list of candidate patterns. 
+    Your main task is to compare and rank these patterns from best to worst based on the adequacy of each pattern for all the requirements.
+    Use only patterns from the provided list, but you might discard patterns being unsuitable for any of the requirements.
+    For each ranked pattern include the following data: 
+    - pattern name, 
+    - a short description, 
+    - and concise pros and cons of using the pattern instantiated on the specific requirements; 
+    Additional information for contextualizing the selected patterns is provided below. If this information is not present, 
+    then return that you don't have sufficient information for the comparison.
+    In addition, after the ranking, briefly explain how the best pattern in the ranking can be applied to satisfy all the requirements.
+    In your answer, return your ranking as a numbered list and afterwards the explanation for the best pattern, all in {format} format.
+    If the requirements do not make sense for the context or are unclear or ambiguous do not make any comparison and
+    just return that you don't have sufficient information and explain yourself.
+    Do not try to compare or return irrelevant patterns.
+    
+    Patterns: {patterns}
+
+    Context: {system_context}
+
+    Additional information: 
+    {pattern_context}
+
+    Question: Can you compare and rank only those patterns above that are applicable for these requirements ``{requirements}``?
+
+    Helpful Answer:"""
+
+
+
+COMPARISON_PROMPT_TEMPLATE_ZEROSHOT
+
+"""The context below describes the main characteristics and operating enviroment
+    for a software system that needs to be developed. Additional information can be included.
+    The question at the end is about a list of requirements that this software system must fulfill. 
+    The requirements themselves are enclosed by backticks. 
+    I selected a list of candidate patterns. 
+    Your main task is to compare and rank these patterns from best to worst based on the adequacy of each pattern for all the requirements.
+    Use only patterns from the provided list, but you might discard patterns being unsuitable for any of the requirements.
+    For each ranked pattern include the following data: 
+    - pattern name, 
+    - a short description, 
+    - and concise pros and cons of using the pattern instantiated on the specific requirements; 
+    In addition, after the ranking, briefly explain how the best pattern in the ranking can be applied to satisfy all the requirements.
+    In your answer, return your ranking as a list and afterwards the explanation for the best pattern, all in {format} format.
+    If the requirement does not make sense for the context, or is unclear or ambiguous, do not make any comparison and
+    just return that you don't have sufficient information and explain yourself.
+    Do not try to compare or return irrelevant patterns.
+
+    Patterns: {patterns}
+
+    Context: {system_context}
+
+    Question: Can you compare and rank only those patterns above that are applicable for these requirements ``{requirements}``?
+
+    Helpful Answer:"""
