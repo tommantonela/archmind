@@ -1,6 +1,12 @@
-# archbot
+# ArchMind
 
+<!---
 ![](https://github.com/tommantonela/archmind/blob/main/aa.png)
+-->
+
+<p align="center">
+<img src="https://github.com/tommantonela/archmind/blob/main/aa.png" width="500"/>
+</p>
 
 This is the companion material for the paper *"Helping architects to make quality design decisions using LLM-based assistants"*, submitted to ECSA 2024.
 
