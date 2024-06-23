@@ -8,7 +8,7 @@
 <img src="https://github.com/tommantonela/archmind/blob/main/aa.png" width="500"/>
 </p>
 
-This is the companion material for the paper *"Helping architects to make quality design decisions using LLM-based assistants"*, submitted to ECSA 2024.
+This is the companion material for the paper *"Helping novice architects to make quality design decisions using an LLM-based assistant"*, submitted to ECSA 2024.
 
 The materials include:
 
