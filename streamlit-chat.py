@@ -1,5 +1,3 @@
-from pydantic.main import *  # noqa: F403
-
 # from langchain_openai import ChatOpenAI
 import streamlit as st
 from langchain_community.llms import HuggingFaceEndpoint
