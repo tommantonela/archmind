@@ -20,7 +20,7 @@ coloredlogs==15.0.1
 dataclasses-json==0.6.4
 Deprecated==1.2.14
 distro==1.9.0
-fastapi==0.99.1
+fastapi==0.110.0
 filelock==3.13.1
 flatbuffers==24.3.7
 frozenlist==1.4.1
