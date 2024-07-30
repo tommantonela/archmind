@@ -1,13 +1,5 @@
-import typing
+from pydantic.main import *  # noqa: F403
 
-if typing.TYPE_CHECKING:
-    from pydantic.main import *  # noqa: F403
-else:
-    try:
-        from pydantic.v1.main import *  # noqa: F403
-    except ImportError:
-        pass  # If pydantic.v1.main is not found, do not import pydantic.main
-	    
 # from langchain_openai import ChatOpenAI
 import streamlit as st
 from langchain_community.llms import HuggingFaceEndpoint
