@@ -1,7 +1,7 @@
 # from langchain_openai import ChatOpenAI
 import streamlit as st
 from langchain_community.llms import HuggingFaceEndpoint
-# from langchain_groq import ChatGroq
+from langchain_groq import ChatGroq
 
 from assistants import PatternsQACopilot, PatternSuggestionCopilot, PatternAssessmentCopilot, ADRWriterCopilot, PatternConsistencyCheckingCopilot
 from stores import KnowledgeStore, DesignStore
