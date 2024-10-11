@@ -800,7 +800,7 @@ class PatternAssessmentCopilot(BaseCopilot):
             if isinstance(requirement, list):
                 formated_requirements = "\n\n".join(doc for doc in requirement)
     
-            json_format = 'textual'
+            json_format = 'Markdown' #'textual'
             if openai_functions:
                 json_format = 'JSON'
 
